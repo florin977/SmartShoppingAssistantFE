@@ -6,6 +6,7 @@ import Categories from './components/Categories'
 import Home from './components/Home'
 import Products from './components/Products'
 import Promotions from './components/Promotions'
+import NotFound from './components/NotFound'
 
 function App() {
   return (
@@ -15,7 +16,9 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/categories" element={<Categories />} />
       <Route path="/products" element={<Products />} />
-      <Route path="/promotions" element={<Promotions />}/>
+      <Route path="/promotions" element={<Promotions />} />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   </Box>
   )
