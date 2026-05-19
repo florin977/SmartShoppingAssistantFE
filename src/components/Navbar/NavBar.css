@@ -1,0 +1,13 @@
+.main-appbar {
+    background-color: var(--surface-color) !important;
+}
+
+.navbar-btn {
+    background-color: var(--accent-color) !important;
+    color: var(--bg-color) !important;
+    margin-left: 10px !important;
+}
+
+.navbar-btn:hover {
+    background-color: var(--accent-hove) !important;
+}
