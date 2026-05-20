@@ -1,15 +1,15 @@
 :root {
-  --bg-color: #0a0a0a;
-  --surface-color: #171717;
-  --text-color: #ededed;
-  --text-muted: #737373;
-  --accent-color: #525252;
-  --accent-hover: #737373;
+    --bg-color: white;
+    --surface-color: white;
+    --text-color: black;
+    --text-muted: #737373;
+    --accent-color: #525252;
+    --accent-hover: #737373;
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  margin: 0;
-  font-family: system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    font-family: system-ui, sans-serif;
 }
