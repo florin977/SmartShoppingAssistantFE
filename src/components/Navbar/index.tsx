@@ -22,7 +22,7 @@ function NavBar() {
                 <Button className="navbar-btn" component={NavLink} to="/promotions" variant="text">
                     Promotions
                 </Button>
-                <Button className="navbar-btn" component={NavLink} to="/auth/login" variant="text">
+                <Button className="navbar-btn-login" component={NavLink} to="/auth/login" variant="text">
                     Login
                 </Button>
             </Toolbar>
