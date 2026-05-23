@@ -1,17 +1,17 @@
 :root {
-    --bg-color: #000000; /* Pure black background */
-    --surface-color: #121212; /* Dark charcoal for cards/navbar */
-    --surface-hover: #1e1e1e; /* Slightly lighter for hover states */
+    --bg-color: #0d0d0d; /* Deep off-black, much softer than #000 */
+    --surface-color: #1a1a1a; /* Lighter charcoal to create visual depth from the background */
+    --surface-hover: #242424;
 
-    --text-primary: #ffffff; /* Pure white for headings/main text */
-    --text-secondary: #a1a1a1; /* Muted gray for descriptions */
+    --text-primary: #f5f5f5; /* Soft off-white to reduce "halation" (glow) on dark backgrounds */
+    --text-secondary: #999999; /* Balanced muted gray */
 
-    --accent-primary: #ffffff; /* White for primary buttons */
-    --accent-text: #000000; /* Black text for white buttons */
+    --accent-primary: #f5f5f5; /* Matches text-primary for consistency */
+    --accent-text: #0d0d0d; /* Deep off-black for high contrast on light buttons */
 
-    --border-color: rgba(255, 255, 255, 0.1); /* Subtle borders */
+    --border-color: rgba(255, 255, 255, 0.08); /* Even subtler borders */
 
-    --radius-lg: 16px; /* Large rounded corners seen in the UI */
+    --radius-lg: 16px;
     --radius-md: 12px;
 }
 
