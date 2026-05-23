@@ -10,19 +10,19 @@ function NavBar() {
                 <Link to="/">
                     <Box component="img" src={logo} alt="Smart Shopping Assistant Logo" sx={{ height: 56, mr: 2 }} />
                 </Link>
-                <Button className="navbar-btn" component={NavLink} to="/" variant="contained">
+                <Button className="navbar-btn" component={NavLink} to="/" variant="text">
                     Home
                 </Button>
-                <Button className="navbar-btn" component={NavLink} to="/categories" variant="contained">
+                <Button className="navbar-btn" component={NavLink} to="/categories" variant="text">
                     Categories
                 </Button>
-                <Button className="navbar-btn" component={NavLink} to="/products" variant="contained">
+                <Button className="navbar-btn" component={NavLink} to="/products" variant="text">
                     Products
                 </Button>
-                <Button className="navbar-btn" component={NavLink} to="/promotions" variant="contained">
+                <Button className="navbar-btn" component={NavLink} to="/promotions" variant="text">
                     Promotions
                 </Button>
-                <Button className="navbar-btn" component={NavLink} to="/auth/login" variant="contained">
+                <Button className="navbar-btn" component={NavLink} to="/auth/login" variant="text">
                     Login
                 </Button>
             </Toolbar>

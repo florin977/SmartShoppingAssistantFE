@@ -34,8 +34,8 @@ function Login() {
     }
 
     return (
-        <Box component="form" onSubmit={handleSubmit} className="login_box">
-            <Paper elevation={3} className="login_paper">
+        <Box component="form" onSubmit={handleSubmit} className="login-box">
+            <Paper elevation={3} className="login-paper">
                 <TextField
                     id="email"
                     label="E-mail"

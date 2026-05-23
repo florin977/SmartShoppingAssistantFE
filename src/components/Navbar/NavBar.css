@@ -1,13 +1,17 @@
 .main-appbar {
-    background-color: var(--surface-color) !important;
+    background-color: var(--bg-color) !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .navbar-btn {
-    background-color: var(--accent-color) !important;
-    color: var(--bg-color) !important;
-    margin-left: 10px !important;
+    color: var(--text-secondary) !important;
+    text-transform: none !important;
+    font-weight: 500 !important;
+    margin: 0 8px !important;
+    transition: color 0.2s ease !important;
 }
 
 .navbar-btn:hover {
-    background-color: var(--accent-hove) !important;
+    color: var(--text-primary) !important;
 }
