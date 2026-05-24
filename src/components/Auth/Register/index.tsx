@@ -1,13 +1,14 @@
 import { Box, Button, Paper, TextField } from "@mui/material"
-import "./Login.css"
-import type { LoginCredentials } from "../../../types/auth/LoginCredentials"
-import attemptLogin from "../../../services/LoginService"
+import "./Register.css"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import type { RegisterCredentials } from "../../../types/auth/RegisterCredentials"
+import attemptRegister from "../../../services/RegisterService"
 
-function Login() {
-    const [email, setEmail] = useState("test@example.com")
-    const [password, setPassword] = useState("LetMeIn")
+function Register() {
+    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [err, setErr] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
@@ -19,12 +20,11 @@ function Login() {
         setIsLoading(true)
 
         try {
-            const credentials: LoginCredentials = { email, password }
-            const result = await attemptLogin(credentials)
+            const credentials: RegisterCredentials = { username, email, password }
+            const result = await attemptRegister(credentials)
 
-            if (result === "OK") {
-                navigate("/")
-            }
+            console.log(result)
+            navigate("/auth/login")
         } catch (err) {
             setErr(err instanceof Error ? err.message : String(err))
         } finally {
@@ -33,31 +33,38 @@ function Login() {
     }
 
     return (
-        <Box component="form" onSubmit={handleSubmit} className="login-box">
-            <Paper elevation={3} className="login-paper">
+        <Box component="form" onSubmit={handleSubmit} className="register-box">
+            <Paper elevation={3} className="register-paper">
+                <TextField
+                    id="username"
+                    label="Username"
+                    variant="standard"
+                    defaultValue="Username"
+                    onChange={(e) => setUsername(e.target.value)}
+                />
                 <TextField
                     id="email"
                     label="E-mail"
                     variant="standard"
-                    defaultValue="test@example.com"
+                    defaultValue="your@email.com"
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
                     id="password"
                     label="Password"
                     variant="standard"
-                    defaultValue="LetMeIn"
+                    defaultValue="Password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button type="submit" variant="contained" color="primary" disabled={isLoading}>
-                    {isLoading ? "Loading..." : "Login"}
+                    {isLoading ? "Loading..." : "Register"}
                 </Button>
                 <Box className="login-register-link">
-                    No account? <Link to="/auth/register">Register here</Link>
+                    Have an account? <Link to="/auth/login">Login here</Link>
                 </Box>
             </Paper>
         </Box>
     )
 }
 
-export default Login
+export default Register

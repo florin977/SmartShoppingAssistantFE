@@ -51,9 +51,6 @@
     transition: all 0.2s ease !important;
 }
 
-    transition: all 0.1s ease !important;
-}
-
 .navbar-btn:hover {
     color: var(--text-primary) !important;
 }

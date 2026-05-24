@@ -1,4 +1,4 @@
-.login-box {
+.register-box {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,7 +6,7 @@
     background-color: var(--bg-color);
 }
 
-.login-paper {
+.register-paper {
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -20,21 +20,21 @@
 }
 
 /* Ensure TextFields are visible in dark mode */
-.login-paper .MuiTextField-root label,
-.login-paper .MuiTextField-root input {
+.register-paper .MuiTextField-root label,
+.register-paper .MuiTextField-root input {
     color: var(--text-primary) !important;
 }
 
-.login-paper .MuiInput-underline:before {
+.register-paper .MuiInput-underline:before {
     border-bottom-color: var(--border-color) !important;
 }
 
-.login-paper .MuiInput-underline:hover:not(.Mui-disabled):before {
+.register-paper .MuiInput-underline:hover:not(.Mui-disabled):before {
     border-bottom-color: var(--text-secondary) !important;
 }
 
 /* Style the Submit Button to match the "Get Started" style */
-.login-paper .MuiButton-root {
+.register-paper .MuiButton-root {
     background-color: var(--accent-primary) !important;
     color: var(--accent-text) !important;
     border-radius: 20px !important;
