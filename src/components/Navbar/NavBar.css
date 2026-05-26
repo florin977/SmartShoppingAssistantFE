@@ -13,18 +13,17 @@
 }
 
 .nav-island {
-    background-color: color-mix(in srgb, var(--surface-color), transparent 80%) !important;
+    background-color: color-mix(in srgb, var(--surface-color), transparent 50%) !important;
     backdrop-filter: blur(12px);
     border: 1px solid var(--border-color);
     border-radius: 100rem !important;
-    padding: 0 !important; /* Removed padding so buttons can fill the entire space */
+    padding: 0 !important;
     display: flex;
     align-items: center;
     height: 48px;
-    overflow: hidden; /* This clips the button backgrounds to the pill shape */
+    overflow: hidden;
 }
 
-/* Add some side breathing room specifically for the Logo island */
 .nav-island:first-of-type {
     padding: 0 16px !important;
 }
