@@ -8,9 +8,11 @@ interface PageHeaderProps {
 
 function PageHeader({ title, actionLabel, onAction }: PageHeaderProps) {
     return (
-        <Box>
-            <Typography>{title}</Typography>
-            <Button onClick={onAction}>{actionLabel}</Button>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Typography variant="h4">{title}</Typography>
+            <Button variant="contained" onClick={onAction}>
+                {actionLabel}
+            </Button>
         </Box>
     )
 }
