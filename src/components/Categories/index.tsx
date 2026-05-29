@@ -74,7 +74,7 @@ function Categories() {
 
     return (
         <Container maxWidth="xl" sx={{ py: 4 }}>
-            <PageHeader title="Categories" actionLabel={"Add Category"} onAction={handleAdd()} />
+            <PageHeader title="Categories" actionLabel={"Add Category"} />
             {error !== "" && (
                 <Alert severity="error" sx={{ mb: 2 }}>
                     {error}
@@ -101,12 +101,12 @@ function Categories() {
                                     <TableCell>{category.description}</TableCell>
                                     <TableCell align="right">
                                         <Tooltip title="Edit">
-                                            <IconButton color="primary" onClick={() => handleEdit(category)}>
+                                            <IconButton color="primary">
                                                 <EditIcon />
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip title="Delete">
-                                            <IconButton color="error" onClick={() => handleDeleteClick(category)}>
+                                            <IconButton color="error">
                                                 <DeleteIcon />
                                             </IconButton>
                                         </Tooltip>

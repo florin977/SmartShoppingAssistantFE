@@ -5,7 +5,7 @@ import logo from "../../assets/logo.png"
 
 function NavBar() {
     return (
-        <AppBar className="main-appbar" position="static" color="default">
+        <AppBar className="main-appbar" position="static">
             <Toolbar className="navbar-toolbar">
                 <Box className="nav-island">
                     <Link to="/">
