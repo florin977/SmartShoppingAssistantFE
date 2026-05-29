@@ -3,7 +3,8 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: var(--bg-color);
+    /* Uses theme.palette.background.default (#232931) */
+    background-color: var(--mui-palette-background-default);
 }
 
 .register-paper {
@@ -13,30 +14,36 @@
     padding: 40px;
     width: 100%;
     max-width: 380px;
-    border-radius: var(--radius-lg) !important;
-    background-color: var(--surface-color) !important; /* Force override of MUI Paper default white */
-    border: 1px solid var(--border-color);
-    box-shadow: none !important; /* The reference image uses flat surfaces with borders */
+    border-radius: 16px !important;
+    /* Uses theme.palette.background.paper (#393E46) */
+    background-color: var(--mui-palette-background-paper) !important;
+    /* Uses standard MUI translucent divider color */
+    border: 1px solid var(--mui-palette-divider);
+    box-shadow: none !important;
 }
 
 /* Ensure TextFields are visible in dark mode */
 .register-paper .MuiTextField-root label,
 .register-paper .MuiTextField-root input {
-    color: var(--text-primary) !important;
+    /* Uses theme.palette.text.primary (#EEEEEE) */
+    color: var(--mui-palette-text-primary) !important;
 }
 
 .register-paper .MuiInput-underline:before {
-    border-bottom-color: var(--border-color) !important;
+    border-bottom-color: var(--mui-palette-divider) !important;
 }
 
 .register-paper .MuiInput-underline:hover:not(.Mui-disabled):before {
-    border-bottom-color: var(--text-secondary) !important;
+    /* Uses theme.palette.text.secondary (#4ECCA3) */
+    border-bottom-color: var(--mui-palette-text-secondary) !important;
 }
 
 /* Style the Submit Button to match the "Get Started" style */
 .register-paper .MuiButton-root {
-    background-color: var(--accent-primary) !important;
-    color: var(--accent-text) !important;
+    /* Uses theme.palette.primary.main (#4ECCA3) */
+    background-color: var(--mui-palette-primary-main) !important;
+    /* Uses theme.palette.primary.contrastText (#232931) */
+    color: var(--mui-palette-primary-contrastText) !important;
     border-radius: 20px !important;
     font-weight: 600 !important;
     padding: 10px !important;
@@ -44,7 +51,8 @@
 }
 
 .login-register-link {
-    color: var(--text-secondary);
+    /* Uses theme.palette.text.secondary (#4ECCA3) */
+    color: var(--mui-palette-text-secondary);
     text-align: center;
     margin-top: 10px;
 }

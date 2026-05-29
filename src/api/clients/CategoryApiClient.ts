@@ -7,9 +7,10 @@ export const CategoriesApi = {
         const data = await http.get<CategoryModel[]>("/Categories")
         return data.map(toCategory)
     },
-    //TODO: Get category by id
-    //
-    //
+    getById: async (id: number): Promise<Category> => {
+        const data = await http.get<Category>(`/Categories/${id}`)
+        return toCategory(data)
+    },
     create: async (data: CategoryInput): Promise<Category> => {
         return toCategory(await http.post<CategoryModel>("/Categories", data))
     },

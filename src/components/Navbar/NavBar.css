@@ -7,15 +7,12 @@
     right: 0 !important;
 }
 
-.navbar-toolbar {
-    justify-content: space-between !important;
-    padding: 0 !important;
-}
-
 .nav-island {
-    background-color: color-mix(in srgb, var(--surface-color), transparent 50%) !important;
+    /* Uses theme.palette.background.paper */
+    background-color: color-mix(in srgb, var(--mui-palette-background-paper), transparent 50%) !important;
     backdrop-filter: blur(12px);
-    border: 1px solid var(--border-color);
+    /* Uses theme.palette.divider */
+    border: 1px solid var(--mui-palette-divider);
     border-radius: 100rem !important;
     padding: 0 !important;
     display: flex;
@@ -29,31 +26,39 @@
 }
 
 .navbar-btn {
-    color: var(--text-secondary) !important;
-    border-radius: 0 !important; /* Let the island handle the rounding */
+    /* Uses theme.palette.text.secondary */
+    color: var(--mui-palette-text-secondary) !important;
+    border-radius: 0 !important;
     text-transform: none !important;
     font-weight: 500 !important;
-    padding: 0 20px !important; /* Vertical padding handled by height: 100% */
+    padding: 0 20px !important;
     height: 100%;
-    transition: all 0.2s ease !important;
-}
-
-.navbar-btn-login {
-    color: var(--accent-text) !important;
-    background-color: var(--accent-primary) !important;
-    border-radius: 0 !important; /* Let the island handle the rounding */
-    text-transform: none !important;
-    font-weight: 600 !important;
-    padding: 0 24px !important;
-    height: 100%;
-    width: 100%; /* Fill the entire island */
     transition: all 0.2s ease !important;
 }
 
 .navbar-btn:hover {
-    color: var(--text-primary) !important;
+    /* Uses theme.palette.text.primary */
+    color: var(--mui-palette-text-primary) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.navbar-btn-login {
+    /* Uses theme.palette.primary.contrastText */
+    color: var(--mui-palette-primary-contrastText) !important;
+    /* Uses theme.palette.primary.main */
+    background-color: var(--mui-palette-primary-main) !important;
+    border-radius: 0 !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+    padding: 0 24px !important;
+    height: 100%;
+    width: 100%;
+    transition: all 0.2s ease !important;
 }
 
 .navbar-btn-login:hover {
-    background-color: var(--text-secondary) !important;
+    /* Uses theme.palette.secondary.main (Dark Grey) */
+    background-color: var(--mui-palette-secondary-main) !important;
+
+    color: var(--mui-palette-text-primary) !important;
 }

@@ -6,12 +6,13 @@ import logo from "../../assets/logo.png"
 function NavBar() {
     return (
         <AppBar className="main-appbar" position="static">
-            <Toolbar className="navbar-toolbar">
+            <Toolbar sx={{ justifyContent: "space-between", padding: "0 !important" }}>
                 <Box className="nav-island">
-                    <Link to="/">
+                    <Link to="/" style={{ display: "flex", alignItems: "center" }}>
                         <Box component="img" src={logo} alt="Smart Shopping Assistant Logo" sx={{ height: 32 }} />
                     </Link>
                 </Box>
+
                 <Box className="nav-island">
                     <Button className="navbar-btn" component={NavLink} to="/" variant="text">
                         Home
@@ -26,6 +27,7 @@ function NavBar() {
                         Promotions
                     </Button>
                 </Box>
+
                 <Box className="nav-island">
                     <Button className="navbar-btn-login" component={NavLink} to="/auth/login" variant="text">
                         Login

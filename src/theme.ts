@@ -1,54 +1,66 @@
-import { createTheme } from "@mui/material/styles"
+import { responsiveFontSizes, createTheme } from "@mui/material/styles"
 
 const theme = createTheme({
     cssVariables: true,
     palette: {
         mode: "dark",
+
         primary: {
-            main: "#f5f5f5", // --accent-primary
-            contrastText: "#0d0d0d", // --accent-text
+            main: "#4ECCA3",
+            contrastText: "#232931",
         },
+
+        secondary: {
+            main: "#393E46",
+            contrastText: "#EEEEEE",
+        },
+
         background: {
-            default: "#0d0d0d", // --bg-color
-            paper: "#2a2a2a", // --surface-color
+            default: "#232931",
+            paper: "#393E46",
         },
+
         text: {
-            primary: "#f5f5f5",
-            secondary: "#999999",
+            primary: "#EEEEEE",
+            secondary: "#4ECCA3",
         },
-        divider: "rgba(255, 255, 255, 0.08)", // --border-color
     },
-    shape: {
-        borderRadius: 12, // --radius-md
-    },
+
     components: {
+        // 1. Button Overrides
         MuiButton: {
             styleOverrides: {
                 root: {
-                    textTransform: "none",
-                    borderRadius: "100%",
+                    borderRadius: "100rem", // Pill shape
+                    textTransform: "none", // Stops MUI from making buttons ALL CAPS
+                    fontWeight: 600, // Makes button text punchier
+                    boxShadow: "none", // Flat design (removes default drop shadow)
                 },
             },
         },
+
+        // 2. Paper Overrides (Affects Cards, Dialogs, and your Login/Register boxes)
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundImage: "none",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    backgroundImage: "none", // MUI adds a white overlay to Paper in dark mode; this removes it for pure colors
+                    boxShadow: "none", // You explicitly removed shadows in your CSS, this does it globally
+                    borderRadius: 16, // Your standard --radius-lg
                 },
             },
         },
+
+        // 3. AppBar Overrides (Cleans up your NavBar)
         MuiAppBar: {
             styleOverrides: {
                 root: {
-                    backgroundImage: "none",
+                    background: "none",
                     backgroundColor: "transparent",
                     boxShadow: "none",
-                    border: "none",
                 },
             },
         },
     },
 })
 
-export default theme
+export default responsiveFontSizes(theme)
