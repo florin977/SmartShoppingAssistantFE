@@ -7,9 +7,18 @@ interface ConfirmDialogProps {
     confirmLabel: string
     onConfirm: () => void
     onCancel: () => void
+    confirmColor?: "error" | "primary" | "secondary" | "info" | "success" | "warning"
 }
 
-function ConfirmDialog({ open, title, description, confirmLabel, onConfirm, onCancel }: ConfirmDialogProps) {
+function ConfirmDialog({
+    open,
+    title,
+    description,
+    confirmLabel,
+    onConfirm,
+    onCancel,
+    confirmColor = "error",
+}: ConfirmDialogProps) {
     return (
         <Dialog open={open} onClose={onCancel}>
             <DialogTitle>{title}</DialogTitle>
@@ -18,7 +27,7 @@ function ConfirmDialog({ open, title, description, confirmLabel, onConfirm, onCa
             </DialogContent>
             <DialogActions>
                 <Button onClick={onCancel}>Cancel</Button>
-                <Button color="error" variant="contained" onClick={onConfirm}>
+                <Button color={confirmColor} variant="contained" onClick={onConfirm}>
                     {confirmLabel}
                 </Button>
             </DialogActions>

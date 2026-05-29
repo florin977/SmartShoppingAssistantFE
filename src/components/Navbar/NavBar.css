@@ -58,7 +58,5 @@
 
 .navbar-btn-login:hover {
     /* Uses theme.palette.secondary.main (Dark Grey) */
-    background-color: var(--mui-palette-secondary-main) !important;
-
-    color: var(--mui-palette-text-primary) !important;
+    background-color: var(--mui-palette-primary-dark) !important;
 }
