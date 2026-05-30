@@ -121,7 +121,7 @@ function Products() {
                             {products.length === 0 && (
                                 <TableRow>
                                     <TableCell colSpan={3} align="center">
-                                        No categories yet.
+                                        No products yet.
                                     </TableCell>
                                 </TableRow>
                             )}

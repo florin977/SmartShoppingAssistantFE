@@ -1,14 +1,15 @@
-import type { PromotionModel, Promotiontype, RewardType } from "../../../api/models/PromotionModel"
+import type { PromotionModel } from "../../../api/models/PromotionModel"
+import type { PromotionType, RewardType } from "./PromotionTypes"
 
 export interface Promotion {
     id: number
     name: string
-    type: Promotiontype
+    type: PromotionType
     threshold: number
     reward: RewardType
     rewardValue: number
-    productId?: number
-    categoryId?: number
+    productId: number | null
+    categoryId: number | null
     isActive: boolean
 }
 
@@ -20,8 +21,8 @@ export function toPromotion(dto: PromotionModel): Promotion {
         threshold: dto.threshold,
         reward: dto.reward,
         rewardValue: dto.rewardValue,
-        productId: dto.productId,
-        categoryId: dto.categoryId,
+        productId: dto.productId ?? null,
+        categoryId: dto.categoryId ?? null,
         isActive: dto.isActive,
     }
 }
