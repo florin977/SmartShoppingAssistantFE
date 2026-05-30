@@ -1,9 +1,9 @@
-import { Box, Button, Paper, TextField } from "@mui/material"
+import { Alert, Box, Button, Paper, TextField } from "@mui/material"
 import "./Login.css"
-import type { LoginCredentials } from "../../../types/auth/LoginCredentials"
-import attemptLogin from "../../../services/LoginService"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { AuthApiClient } from "../../../api/clients/AuthApiClient"
+import type { LoginCredentials } from "../../shared/types/AuthTypes"
 
 function Login() {
     const [email, setEmail] = useState("test@example.com")
@@ -20,13 +20,10 @@ function Login() {
 
         try {
             const credentials: LoginCredentials = { email, password }
-            const result = await attemptLogin(credentials)
-
-            if (result === "OK") {
-                navigate("/")
-            }
+            await AuthApiClient.login(credentials)
+            navigate("/")
         } catch (err) {
-            setErr(err instanceof Error ? err.message : String(err))
+            setErr((err as Error).message)
         } finally {
             setIsLoading(false)
         }
@@ -35,6 +32,11 @@ function Login() {
     return (
         <Box component="form" onSubmit={handleSubmit} className="login-box">
             <Paper elevation={3} className="login-paper">
+                {err && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                        {err}
+                    </Alert>
+                )}
                 <TextField
                     id="email"
                     label="E-mail"

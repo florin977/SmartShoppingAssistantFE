@@ -1,14 +1,14 @@
-import { Box, Button, Paper, TextField } from "@mui/material"
+import { Alert, Box, Button, Paper, TextField } from "@mui/material"
 import "./Register.css"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import type { RegisterCredentials } from "../../../types/auth/RegisterCredentials"
-import attemptRegister from "../../../services/RegisterService"
+import type { RegisterCredentials } from "../../shared/types/AuthTypes"
+import { AuthApiClient } from "../../../api/clients/AuthApiClient"
 
 function Register() {
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [username, setUsername] = useState("Username")
+    const [email, setEmail] = useState("your@email.com")
+    const [password, setPassword] = useState("Password")
     const [err, setErr] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
@@ -21,12 +21,10 @@ function Register() {
 
         try {
             const credentials: RegisterCredentials = { username, email, password }
-            const result = await attemptRegister(credentials)
-
-            console.log(result)
+            await AuthApiClient.register(credentials)
             navigate("/auth/login")
         } catch (err) {
-            setErr(err instanceof Error ? err.message : String(err))
+            setErr((err as Error).message)
         } finally {
             setIsLoading(false)
         }
@@ -35,6 +33,11 @@ function Register() {
     return (
         <Box component="form" onSubmit={handleSubmit} className="register-box">
             <Paper elevation={3} className="register-paper">
+                {err && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                        {err}
+                    </Alert>
+                )}
                 <TextField
                     id="username"
                     label="Username"
