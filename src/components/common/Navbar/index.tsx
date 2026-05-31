@@ -17,13 +17,13 @@ function NavBar() {
                     <Button className="navbar-btn" component={NavLink} to="/" variant="text">
                         Home
                     </Button>
-                    <Button className="navbar-btn" component={NavLink} to="/categories" variant="text">
+                    <Button className="navbar-btn" component={NavLink} to="/admin/categories" variant="text">
                         Categories
                     </Button>
-                    <Button className="navbar-btn" component={NavLink} to="/products" variant="text">
+                    <Button className="navbar-btn" component={NavLink} to="/admin/products" variant="text">
                         Products
                     </Button>
-                    <Button className="navbar-btn" component={NavLink} to="/promotions" variant="text">
+                    <Button className="navbar-btn" component={NavLink} to="/admin/promotions" variant="text">
                         Promotions
                     </Button>
                 </Box>

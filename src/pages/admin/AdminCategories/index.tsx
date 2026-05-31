@@ -14,16 +14,16 @@ import {
     Tooltip,
 } from "@mui/material"
 import { useEffect, useState } from "react"
-import type { Category } from "../../components/shared/types/Category"
-import { CategoriesApi } from "../../api/clients/CategoryApiClient"
+import type { Category } from "../../../components/shared/types/Category"
+import { CategoriesApi } from "../../../api/clients/CategoryApiClient"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
-import PageHeader from "../../components/common/PageHeader"
-import CategoryFormDialog from "../../components/admin/CategoryFormDialog"
-import type { CategoryModel } from "../../api/models/CategoryModel"
-import ConfirmDialog from "../../components/common/ConfirmDialog"
+import PageHeader from "../../../components/common/PageHeader"
+import CategoryFormDialog from "../../../components/admin/CategoryFormDialog"
+import type { CategoryModel } from "../../../api/models/CategoryModel"
+import ConfirmDialog from "../../../components/common/ConfirmDialog"
 
-function Categories() {
+function AdminCategories() {
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
@@ -146,4 +146,4 @@ function Categories() {
     )
 }
 
-export default Categories
+export default AdminCategories

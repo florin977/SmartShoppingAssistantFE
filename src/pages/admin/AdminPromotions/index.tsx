@@ -15,15 +15,15 @@ import {
 } from "@mui/material"
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
-import PromotionFormDialog from "../../components/admin/PromotionFormDialog"
-import { PromotionsApi } from "../../api/clients/PromotionApiClient"
-import type { Promotion } from "../../components/shared/types/Promotion"
+import PromotionFormDialog from "../../../components/admin/PromotionFormDialog"
+import { PromotionsApi } from "../../../api/clients/PromotionApiClient"
+import type { Promotion } from "../../../components/shared/types/Promotion"
 import { useEffect, useState } from "react"
-import PageHeader from "../../components/common/PageHeader"
-import type { PromotionModel } from "../../api/models/PromotionModel"
-import ConfirmDialog from "../../components/common/ConfirmDialog"
+import PageHeader from "../../../components/common/PageHeader"
+import type { PromotionModel } from "../../../api/models/PromotionModel"
+import ConfirmDialog from "../../../components/common/ConfirmDialog"
 
-function Promotions() {
+function AdminPromotions() {
     const [Promotions, setPromotions] = useState<Promotion[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
@@ -158,4 +158,4 @@ function Promotions() {
     )
 }
 
-export default Promotions
+export default AdminPromotions
