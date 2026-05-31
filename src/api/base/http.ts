@@ -1,5 +1,13 @@
 import axios from "axios"
 
+let isRefreshing = false
+let refreshSubscribers: ((error: Error | null) => void)[] = []
+
+const onRefreshed = (error: Error | null) => {
+    refreshSubscribers.forEach((callback) => callback(error))
+    refreshSubscribers = []
+}
+
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     headers: { "Content-Type": "application/json" },
@@ -11,9 +19,48 @@ api.interceptors.response.use(
     (response) => response,
 
     // Error
-    (error) => {
+    async (error) => {
         const data = error.response?.data
         const message = typeof data === "string" && data !== "" ? data : error.message || "Request failed"
+        const originalRequest = error.config
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            if (originalRequest.url?.includes("/auth/refresh")) {
+                window.location.href = "/auth/login"
+                return Promise.reject(new Error(message))
+            }
+
+            originalRequest._retry = true
+
+            if (!isRefreshing) {
+                isRefreshing = true
+
+                try {
+                    await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/refresh`, {}, { withCredentials: true })
+                    isRefreshing = false
+                    onRefreshed(null)
+
+                    return api(originalRequest)
+                } catch (refreshError) {
+                    isRefreshing = false
+                    onRefreshed(new Error("Refresh failed"))
+                    window.location.href = "/auth/login"
+
+                    return Promise.reject(refreshError)
+                }
+            }
+
+            return new Promise((resolve, reject) => {
+                refreshSubscribers.push((err: Error | null) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(api(originalRequest))
+                    }
+                })
+            })
+        }
+
         return Promise.reject(new Error(message))
     },
 )
