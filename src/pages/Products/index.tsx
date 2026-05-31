@@ -16,12 +16,12 @@ import {
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { useEffect, useState } from "react"
-import type { Product } from "../shared/types/Product"
+import type { Product } from "../../components/shared/types/Product"
 import type { ProductModel } from "../../api/models/ProductModel"
 import { ProductsApi } from "../../api/clients/ProductApiClient"
-import PageHeader from "../common/PageHeader"
-import ProductFormDialog from "./ProductFormDialog"
-import ConfirmDialog from "../common/ConfirmDialog"
+import PageHeader from "../../components/common/PageHeader"
+import ProductFormDialog from "../../components/admin/ProductFormDialog"
+import ConfirmDialog from "../../components/common/ConfirmDialog"
 
 function Products() {
     const [products, setProducts] = useState<Product[]>([])

@@ -1,14 +1,14 @@
 import { Box } from "@mui/material"
 import "./App.css"
-import NavBar from "./components/Navbar"
+import NavBar from "./components/common/Navbar"
 import { Route, Routes } from "react-router-dom"
-import Categories from "./components/Categories"
-import Home from "./components/Home"
-import Products from "./components/Products"
-import Promotions from "./components/Promotions"
-import NotFound from "./components/NotFound"
-import Login from "./components/Auth/Login"
-import Register from "./components/Auth/Register"
+import Categories from "./pages/Categories"
+import Home from "./pages/Home"
+import Products from "./pages/Products"
+import Promotions from "./pages/Promotions"
+import NotFound from "./pages/NotFound"
+import Login from "./pages/Auth/Login"
+import Register from "./pages/Auth/Register"
 
 function App() {
     return (

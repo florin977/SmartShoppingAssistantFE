@@ -2,7 +2,7 @@ import { Alert, Box, Button, Paper, TextField } from "@mui/material"
 import "./Register.css"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import type { RegisterCredentials } from "../../shared/types/AuthTypes"
+import type { RegisterCredentials } from "../../../components/shared/types/AuthTypes"
 import { AuthApiClient } from "../../../api/clients/AuthApiClient"
 
 function Register() {

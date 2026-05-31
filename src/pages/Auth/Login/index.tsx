@@ -3,7 +3,7 @@ import "./Login.css"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AuthApiClient } from "../../../api/clients/AuthApiClient"
-import type { LoginCredentials } from "../../shared/types/AuthTypes"
+import type { LoginCredentials } from "../../../components/shared/types/AuthTypes"
 
 function Login() {
     const [email, setEmail] = useState("test@example.com")
