@@ -1,9 +1,14 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material"
+import { useAuth } from "../../contexts/AuthContext"
 
 function Home() {
+    const { user } = useAuth()
+
     return (
-        <Box>This is the home page</Box>
-    );
+        <Box>
+            <Typography variant="h1">Welcome to Smart Shopping Assistant, {user ? user.username : "Guest"}</Typography>
+        </Box>
+    )
 }
 
-export default Home;
+export default Home

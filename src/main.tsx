@@ -6,13 +6,16 @@ import { BrowserRouter } from "react-router-dom"
 import { ThemeProvider } from "@mui/material/styles"
 import theme from "./theme.ts"
 import { CssBaseline } from "@mui/material"
+import { AuthProvider } from "./contexts/AuthContext.tsx"
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <BrowserRouter>
-                <App />
+                <AuthProvider>
+                    <App />
+                </AuthProvider>
             </BrowserRouter>
         </ThemeProvider>
     </StrictMode>,

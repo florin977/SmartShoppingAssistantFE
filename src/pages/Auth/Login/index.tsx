@@ -2,8 +2,8 @@ import { Alert, Box, Button, Paper, TextField } from "@mui/material"
 import "./Login.css"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { AuthApiClient } from "../../../api/clients/AuthApiClient"
 import type { LoginCredentials } from "../../../components/shared/types/AuthTypes"
+import { useAuth } from "../../../contexts/AuthContext"
 
 function Login() {
     const [email, setEmail] = useState("test@example.com")
@@ -13,6 +13,8 @@ function Login() {
 
     const navigate = useNavigate()
 
+    const { login } = useAuth()
+
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault()
         setErr("")
@@ -20,7 +22,8 @@ function Login() {
 
         try {
             const credentials: LoginCredentials = { email, password }
-            await AuthApiClient.login(credentials)
+            await login(credentials)
+
             navigate("/")
         } catch (err) {
             setErr((err as Error).message)

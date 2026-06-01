@@ -3,6 +3,6 @@ import type { UserModel } from "../models/UserModel"
 
 export const UserApiClient = {
     getUser: async (): Promise<UserModel> => {
-        return await http.post<UserModel>("Users/me", null)
+        return await http.get<UserModel>("Users/me")
     },
 }

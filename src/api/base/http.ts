@@ -25,7 +25,7 @@ api.interceptors.response.use(
         const originalRequest = error.config
 
         if (error.response?.status === 401 && !originalRequest._retry) {
-            if (originalRequest.url?.includes("/auth/refresh")) {
+            if (originalRequest.url?.includes("/Auth/refresh")) {
                 window.location.href = "/auth/login"
                 return Promise.reject(new Error(message))
             }
@@ -36,7 +36,7 @@ api.interceptors.response.use(
                 isRefreshing = true
 
                 try {
-                    await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/refresh`, {}, { withCredentials: true })
+                    await axios.post(`${import.meta.env.VITE_API_URL}/api/Auth/refresh`, {}, { withCredentials: true })
                     isRefreshing = false
                     onRefreshed(null)
 
