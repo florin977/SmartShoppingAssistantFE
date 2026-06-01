@@ -3,34 +3,22 @@ import {
     Box,
     CircularProgress,
     Container,
-    IconButton,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Tooltip,
+    Typography,
+    Grid,
+    Card,
+    CardMedia,
+    CardContent,
+    CardActions,
+    Button,
 } from "@mui/material"
-import EditIcon from "@mui/icons-material/Edit"
-import DeleteIcon from "@mui/icons-material/Delete"
 import { useEffect, useState } from "react"
 import type { Product } from "../../../components/shared/types/Product"
-import type { ProductModel } from "../../../api/models/ProductModel"
 import { ProductsApi } from "../../../api/clients/ProductApiClient"
-import PageHeader from "../../../components/common/PageHeader"
-import ProductFormDialog from "../../../components/admin/ProductFormDialog"
-import ConfirmDialog from "../../../components/common/ConfirmDialog"
 
 function CustomerProducts() {
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
-    const [formOpen, setFormOpen] = useState(false)
-    const [editing, setEditing] = useState<Product | null>(null)
-    const [deleting, setDeleting] = useState<ProductModel | null>(null)
-    const [confirmOpen, setConfirmOpen] = useState(false)
 
     function loadProducts() {
         ProductsApi.getAll()
@@ -43,110 +31,85 @@ function CustomerProducts() {
             .finally(() => setLoading(false))
     }
 
-    function handleAdd() {
-        setEditing(null)
-        setFormOpen(true)
-    }
-
-    function handleEdit(product: Product) {
-        setEditing(product)
-        setFormOpen(true)
-    }
-
-    function handleDeleteClick(product: Product) {
-        setDeleting(product)
-        setConfirmOpen(true)
-    }
-
-    async function handleDelete() {
-        if (deleting === null) return
-        setConfirmOpen(false)
-        try {
-            await ProductsApi.remove(deleting.id)
-            loadProducts()
-        } catch (err) {
-            setError((err as Error).message)
-        }
-    }
-
     useEffect(() => {
         loadProducts()
     }, [])
 
     return (
         <Container maxWidth="xl" sx={{ py: 4 }}>
-            <PageHeader title="Products" actionLabel={"Add Product"} onAction={handleAdd} />
             {error !== "" && (
                 <Alert severity="error" sx={{ mb: 2 }}>
                     {error}
                 </Alert>
             )}
+
             {loading ? (
                 <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
                     <CircularProgress />
                 </Box>
             ) : (
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>ImageUrl</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Description</TableCell>
-                                <TableCell>Price</TableCell>
-                                <TableCell align="right">Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {products.map((product) => (
-                                <TableRow key={product.id} hover>
-                                    <TableCell>{product.imageUrl}</TableCell>
-                                    <TableCell>{product.name}</TableCell>
-                                    <TableCell>{product.description}</TableCell>
-                                    <TableCell>{product.price}</TableCell>
-                                    <TableCell align="right">
-                                        <Tooltip title="Edit">
-                                            <IconButton color="primary" onClick={() => handleEdit(product)}>
-                                                <EditIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Delete">
-                                            <IconButton color="error" onClick={() => handleDeleteClick(product)}>
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                            {products.length === 0 && (
-                                <TableRow>
-                                    <TableCell colSpan={3} align="center">
-                                        No products yet.
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <Grid container spacing={3}>
+                    {products.map((product) => (
+                        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
+                            <Card
+                                sx={{
+                                    height: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    transition: "transform 0.2s",
+                                    "&:hover": {
+                                        transform: "scale(1.02)",
+                                        boxShadow: 6,
+                                    },
+                                }}>
+                                <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={product.imageUrl || "https://placehold.co/400x400?text=No+Image"}
+                                    alt={product.name}
+                                    sx={{ objectFit: "cover" }}
+                                />
+                                <CardContent sx={{ flexGrow: 1 }}>
+                                    <Typography gutterBottom variant="h6" component="h2" noWrap>
+                                        {product.name}
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                        sx={{
+                                            mb: 2,
+                                            display: "-webkit-box",
+                                            WebkitLineClamp: 3,
+                                            WebkitBoxOrient: "vertical",
+                                            overflow: "hidden",
+                                        }}>
+                                        {product.description}
+                                    </Typography>
+                                    <Typography variant="h5" color="primary.main" sx={{ fontWeight: "bold" }}>
+                                        ${product.price.toFixed(2)}
+                                    </Typography>
+                                </CardContent>
+                                <CardActions sx={{ p: 2, pt: 0 }}>
+                                    <Button
+                                        variant="contained"
+                                        fullWidth
+                                        onClick={() => console.log("Will be done in the next lab, trust")}>
+                                        Add to Cart
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                    ))}
+
+                    {products.length === 0 && (
+                        <Box sx={{ width: "100%", textAlign: "center", mt: 4 }}>
+                            <Typography variant="h6" color="text.secondary">
+                                No products available right now. Check back later!
+                            </Typography>
+                        </Box>
+                    )}
+                </Grid>
             )}
-            {formOpen && (
-                <ProductFormDialog
-                    product={editing}
-                    onClose={() => setFormOpen(false)}
-                    onSaved={() => {
-                        setFormOpen(false)
-                        loadProducts()
-                    }}
-                />
-            )}
-            <ConfirmDialog
-                open={confirmOpen}
-                title="Delete category"
-                description={`Are you sure you want to delete "${deleting?.name}"?`}
-                confirmLabel="Delete"
-                onConfirm={handleDelete}
-                onCancel={() => setConfirmOpen(false)}
-            />
         </Container>
     )
 }

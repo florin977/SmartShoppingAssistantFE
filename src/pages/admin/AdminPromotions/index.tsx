@@ -108,9 +108,9 @@ function AdminPromotions() {
                                     <TableCell>{promotion.threshold}</TableCell>
                                     <TableCell>{promotion.reward}</TableCell>
                                     <TableCell>{promotion.rewardValue}</TableCell>
-                                    <TableCell>{promotion.productId == null ? "N/A" : promotion.productId}</TableCell>
-                                    <TableCell>{promotion.categoryId == null ? "N/A" : promotion.categoryId}</TableCell>
-                                    <TableCell>{promotion.isActive == true ? "Yes" : "No"}</TableCell>
+                                    <TableCell>{promotion.productId ?? "N/A"}</TableCell>
+                                    <TableCell>{promotion.categoryId ?? "N/A"}</TableCell>
+                                    <TableCell>{promotion.isActive ? "Yes" : "No"}</TableCell>
                                     <TableCell align="right">
                                         <Tooltip title="Edit">
                                             <IconButton color="primary" onClick={() => handleEdit(promotion)}>

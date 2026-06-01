@@ -92,7 +92,6 @@ function AdminProducts() {
                             <TableRow>
                                 <TableCell>ImageUrl</TableCell>
                                 <TableCell>Name</TableCell>
-                                <TableCell>Description</TableCell>
                                 <TableCell>Price</TableCell>
                                 <TableCell align="right">Actions</TableCell>
                             </TableRow>
@@ -100,8 +99,14 @@ function AdminProducts() {
                         <TableBody>
                             {products.map((product) => (
                                 <TableRow key={product.id} hover>
-                                    <TableCell>{product.imageUrl}</TableCell>
-                                    <TableCell>{product.name}</TableCell>
+                                    <TableCell>
+                                        <Box
+                                            component="img"
+                                            src={product.imageUrl}
+                                            alt={product.name}
+                                            sx={{ objectFit: "cover", width: 50, height: 50 }}
+                                        />
+                                    </TableCell>
                                     <TableCell>{product.description}</TableCell>
                                     <TableCell>{product.price}</TableCell>
                                     <TableCell align="right">

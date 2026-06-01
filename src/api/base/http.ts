@@ -36,7 +36,8 @@ api.interceptors.response.use(
                 isRefreshing = true
 
                 try {
-                    await axios.post(`${import.meta.env.VITE_API_URL}/api/Auth/refresh`, {}, { withCredentials: true })
+                    await axios.post(`${import.meta.env.VITE_API_URL}/Auth/refresh`, {}, { withCredentials: true })
+
                     isRefreshing = false
                     onRefreshed(null)
 
