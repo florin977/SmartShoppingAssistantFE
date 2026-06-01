@@ -9,4 +9,10 @@ export const AuthApiClient = {
     register: async (credentials: RegisterCredentials): Promise<RegisterModel> => {
         return await http.post<RegisterModel>("/Auth/register", credentials)
     },
+    logout: async (): Promise<void> => {
+        await http.post<void>("/Auth/logout", null)
+    },
+    logoutAll: async (): Promise<void> => {
+        await http.post<void>("/Auth/logoutAll", null)
+    },
 }
