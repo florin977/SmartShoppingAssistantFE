@@ -12,6 +12,7 @@ import AdminPromotions from "./pages/admin/AdminPromotions"
 import CustomerCategories from "./pages/customer/CustomerCategories"
 import CustomerProducts from "./pages/customer/CustomerProducts"
 import CustomerPromotions from "./pages/customer/CustomerPromotions"
+import Shop from "./pages/Shop"
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/promotions" element={<CustomerPromotions />} />
                 <Route path="/auth/login" element={<Login />} />
                 <Route path="/auth/register" element={<Register />} />
+                <Route path="/shop" element={<Shop />} />
 
                 <Route path="*" element={<NotFound />} />
             </Routes>
