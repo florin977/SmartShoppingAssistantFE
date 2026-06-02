@@ -108,7 +108,7 @@ function AdminProducts() {
                                         />
                                     </TableCell>
                                     <TableCell>{product.description}</TableCell>
-                                    <TableCell>{product.price}</TableCell>
+                                    <TableCell>{product.price} Ron</TableCell>
                                     <TableCell align="right">
                                         <Tooltip title="Edit">
                                             <IconButton color="primary" onClick={() => handleEdit(product)}>
