@@ -86,7 +86,7 @@ function CustomerProducts() {
                                         {product.description}
                                     </Typography>
                                     <Typography variant="h5" color="primary.main" sx={{ fontWeight: "bold" }}>
-                                        ${product.price.toFixed(2)}
+                                        {product.price.toFixed(2)} Ron
                                     </Typography>
                                 </CardContent>
                                 <CardActions sx={{ p: 2, pt: 0 }}>
