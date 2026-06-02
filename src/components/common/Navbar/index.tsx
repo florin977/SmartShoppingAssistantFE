@@ -1,11 +1,14 @@
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material"
+import { AppBar, Badge, Box, Button, IconButton, Toolbar, Typography } from "@mui/material"
 import { Link, NavLink } from "react-router-dom"
 import "./NavBar.css"
 import logo from "../../../assets/logo.png"
-import { useAuth } from "../../../contexts/AuthContext"
+import { useAuth } from "../../../contexts/AuthContext/AuthContext"
+import { useCart } from "../../../contexts/CartContext/cart-context"
+import { ShoppingCart } from "@mui/icons-material"
 
 function NavBar() {
     const { user, logout } = useAuth()
+    const { cart, openCart } = useCart()
 
     return (
         <AppBar className="main-appbar" position="static">
@@ -55,6 +58,13 @@ function NavBar() {
                                 {user?.username}
                             </Typography>
                         </>
+                    )}
+                    {user?.role === "Customer" && (
+                        <IconButton color="inherit" onClick={openCart}>
+                            <Badge badgeContent={cart?.itemCount ?? 0} color="primary">
+                                <ShoppingCart />
+                            </Badge>
+                        </IconButton>
                     )}
                 </Box>
             </Toolbar>

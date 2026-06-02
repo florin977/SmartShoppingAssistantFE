@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material"
-import { useAuth } from "../../contexts/AuthContext"
+import { useAuth } from "../../contexts/AuthContext/AuthContext"
 
 function Home() {
     const { user } = useAuth()

@@ -14,6 +14,7 @@ import { useEffect, useMemo, useState } from "react"
 import type { Product } from "../../components/shared/types/Product"
 import { ProductsApi } from "../../api/clients/ProductApiClient"
 import { AddShoppingCart } from "@mui/icons-material"
+import { useCart } from "../../contexts/CartContext/cart-context"
 
 function Shop() {
     const [products, setProducts] = useState<Product[]>([])
@@ -21,12 +22,17 @@ function Shop() {
     const [err, setError] = useState("")
 
     const [search, setSearch] = useState("")
+    const { addItem } = useCart()
 
     const visibleProducts = useMemo(() => {
         return products.filter((product) =>
             product.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()),
         )
     }, [products, search])
+
+    const handleAddToCart = async (product: Product) => {
+        await addItem(product.id, 1)
+    }
 
     function loadProducts() {
         ProductsApi.getAll()
@@ -97,7 +103,7 @@ function Shop() {
                                     fullWidth
                                     variant="contained"
                                     startIcon={<AddShoppingCart />}
-                                    onClick={() => {}}>
+                                    onClick={() => handleAddToCart(product)}>
                                     Add to Cart
                                 </Button>
                             </CardActions>

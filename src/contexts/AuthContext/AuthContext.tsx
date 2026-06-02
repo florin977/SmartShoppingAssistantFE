@@ -1,8 +1,8 @@
 import React, { useEffect } from "react"
-import { toUser, type User } from "../components/shared/types/User"
-import type { LoginCredentials } from "../components/shared/types/AuthTypes"
-import { AuthApiClient } from "../api/clients/AuthApiClient"
-import { UserApiClient } from "../api/clients/UserApiClient"
+import { toUser, type User } from "../../components/shared/types/User"
+import type { LoginCredentials } from "../../components/shared/types/AuthTypes"
+import { AuthApiClient } from "../../api/clients/AuthApiClient"
+import { UserApiClient } from "../../api/clients/UserApiClient"
 import { useNavigate } from "react-router-dom"
 
 interface AuthContextType {
@@ -19,6 +19,7 @@ export const AuthContext = React.createContext<AuthContextType | null>(null)
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = React.useState<User | null>(null)
     const [isLoading, setIsLoading] = React.useState(true)
+
     const navigate = useNavigate()
 
     useEffect(() => {
