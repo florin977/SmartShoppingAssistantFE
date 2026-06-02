@@ -1,5 +1,5 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material"
-import { Link, NavLink, useNavigate } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import "./NavBar.css"
 import logo from "../../../assets/logo.png"
 import { useAuth } from "../../../contexts/AuthContext"
