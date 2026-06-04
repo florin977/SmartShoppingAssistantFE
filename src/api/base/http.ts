@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { type AxiosRequestConfig } from "axios"
 
 let isRefreshing = false
 let refreshSubscribers: ((error: Error | null) => void)[] = []
@@ -67,8 +67,8 @@ api.interceptors.response.use(
 )
 
 export const http = {
-    get: async <T>(path: string): Promise<T> => {
-        const response = await api.get<T>(path)
+    get: async <T>(path: string, config?: AxiosRequestConfig): Promise<T> => {
+        const response = await api.get<T>(path, config)
         return response.data
     },
 

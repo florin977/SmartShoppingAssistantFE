@@ -15,6 +15,7 @@ import type { Product } from "../../components/shared/types/Product"
 import { ProductsApi } from "../../api/clients/ProductApiClient"
 import { AddShoppingCart } from "@mui/icons-material"
 import { useCart } from "../../contexts/CartContext/cart-context"
+import type { ProductQuery } from "../../components/shared/types/ProductQuery"
 
 function Shop() {
     const [products, setProducts] = useState<Product[]>([])
@@ -22,20 +23,18 @@ function Shop() {
     const [err, setError] = useState("")
 
     const [search, setSearch] = useState("")
-    const { addItem } = useCart()
+    const [query, setQuery] = useState<ProductQuery>({ Page: 1, PageSize: 10 })
+    const [timer, setTimer] = useState<ReturnType<typeof setTimeout> | null>(null)
 
-    const visibleProducts = useMemo(() => {
-        return products.filter((product) =>
-            product.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()),
-        )
-    }, [products, search])
+    const { addItem } = useCart()
 
     const handleAddToCart = async (product: Product) => {
         await addItem(product.id, 1)
     }
 
-    function loadProducts() {
-        ProductsApi.getAll()
+    function loadProducts(query: ProductQuery = {}) {
+        setLoading(true)
+        ProductsApi.getFiltered(query)
             .then((data) => {
                 setProducts(data)
                 setLoading(false)
@@ -45,9 +44,25 @@ function Shop() {
             .finally(() => setLoading(false))
     }
 
+    function handleSearch(searchTerm: string) {
+        setSearch(searchTerm)
+        if (timer) {
+            clearTimeout(timer)
+        }
+
+        const newTimer = setTimeout(() => {
+            setQuery((prev) => ({
+                ...prev,
+                Search: searchTerm,
+            }))
+        }, 700)
+
+        setTimer(newTimer)
+    }
+
     useEffect(() => {
-        loadProducts()
-    }, [])
+        loadProducts(query)
+    }, [query])
 
     return (
         <Container maxWidth="xl" sx={{ py: 4 }}>
@@ -63,7 +78,7 @@ function Shop() {
             <TextField
                 label="Search products"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
                 fullWidth
                 sx={{ mb: 2 }}
             />
@@ -80,7 +95,7 @@ function Shop() {
                         alignContent: "start",
                         gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
                     }}>
-                    {visibleProducts.map((product) => (
+                    {products.map((product) => (
                         <Card key={product.id} sx={{ display: "flex", flexDirection: "column" }}>
                             <CardMedia
                                 component="img"
@@ -111,7 +126,7 @@ function Shop() {
                     ))}
                 </Box>
             )}
-            {visibleProducts.length === 0 && (
+            {products.length === 0 && (
                 <Typography variant="h6" color="textDisabled">
                     No products found
                 </Typography>

@@ -1,10 +1,15 @@
 import { toProduct, type Product } from "../../components/shared/types/Product"
+import type { ProductQuery } from "../../components/shared/types/ProductQuery"
 import { http } from "../base/http"
 import type { ProductInput, ProductModel } from "../models/ProductModel"
 
 export const ProductsApi = {
     getAll: async (): Promise<Product[]> => {
         const data = await http.get<ProductModel[]>("/Products")
+        return data.map(toProduct)
+    },
+    getFiltered: async (query: ProductQuery): Promise<Product[]> => {
+        const data = await http.get<ProductModel[]>("/Products", { params: query })
         return data.map(toProduct)
     },
     getById: async (id: number): Promise<Product> => {
