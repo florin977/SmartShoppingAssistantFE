@@ -7,10 +7,11 @@ import {
     CardMedia,
     CircularProgress,
     Container,
+    Pagination,
     TextField,
     Typography,
 } from "@mui/material"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import type { Product } from "../../components/shared/types/Product"
 import { ProductsApi } from "../../api/clients/ProductApiClient"
 import { AddShoppingCart } from "@mui/icons-material"
@@ -33,7 +34,6 @@ function Shop() {
     }
 
     function loadProducts(query: ProductQuery = {}) {
-        setLoading(true)
         ProductsApi.getFiltered(query)
             .then((data) => {
                 setProducts(data)
@@ -58,6 +58,14 @@ function Shop() {
         }, 700)
 
         setTimer(newTimer)
+    }
+
+    function handlePagination(event: React.ChangeEvent<unknown>, page: number) {
+        window.scrollTo({ top: 0, behavior: "smooth" })
+        setQuery((prev) => ({
+            ...prev,
+            Page: page,
+        }))
     }
 
     useEffect(() => {
@@ -87,44 +95,54 @@ function Shop() {
                     <CircularProgress />
                 </Box>
             ) : (
-                <Box
-                    sx={{
-                        display: "grid",
-                        gap: 2,
-                        flexGrow: 1,
-                        alignContent: "start",
-                        gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-                    }}>
-                    {products.map((product) => (
-                        <Card key={product.id} sx={{ display: "flex", flexDirection: "column" }}>
-                            <CardMedia
-                                component="img"
-                                height="160"
-                                image={product.imageUrl}
-                                alt={product.name}
-                                sx={{ objectFit: "cover" }}
-                            />
-                            <CardContent sx={{ flexGrow: 1 }}>
-                                <Typography variant="h6">{product.name}</Typography>
-                                <Typography variant="body2" color="textDisabled">
-                                    {product.description}
-                                </Typography>
-                                <Typography variant="subtitle1" sx={{ pt: 1 }}>
-                                    {product.price} Ron
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button
-                                    fullWidth
-                                    variant="contained"
-                                    startIcon={<AddShoppingCart />}
-                                    onClick={() => handleAddToCart(product)}>
-                                    Add to Cart
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    ))}
-                </Box>
+                <>
+                    <Box
+                        sx={{
+                            display: "grid",
+                            gap: 2,
+                            flexGrow: 1,
+                            alignContent: "start",
+                            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+                        }}>
+                        {products.map((product) => (
+                            <Card key={product.id} sx={{ display: "flex", flexDirection: "column" }}>
+                                <CardMedia
+                                    component="img"
+                                    height="160"
+                                    image={product.imageUrl}
+                                    alt={product.name}
+                                    sx={{ objectFit: "cover" }}
+                                />
+                                <CardContent sx={{ flexGrow: 1 }}>
+                                    <Typography variant="h6">{product.name}</Typography>
+                                    <Typography variant="body2" color="textDisabled">
+                                        {product.description}
+                                    </Typography>
+                                    <Typography variant="subtitle1" sx={{ pt: 1 }}>
+                                        {product.price} Ron
+                                    </Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Button
+                                        fullWidth
+                                        variant="contained"
+                                        startIcon={<AddShoppingCart />}
+                                        onClick={() => handleAddToCart(product)}>
+                                        Add to Cart
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        ))}
+                    </Box>
+                    <Box>
+                        <Pagination
+                            count={100}
+                            page={query.Page ?? 1}
+                            onChange={handlePagination}
+                            sx={{ mt: 2, display: "flex", justifyContent: "center" }}
+                        />
+                    </Box>
+                </>
             )}
             {products.length === 0 && (
                 <Typography variant="h6" color="textDisabled">
