@@ -1,3 +1,4 @@
+import type { PagedResult } from "../../components/shared/types/PagedResult"
 import { toProduct, type Product } from "../../components/shared/types/Product"
 import type { ProductQuery } from "../../components/shared/types/ProductQuery"
 import { http } from "../base/http"
@@ -8,9 +9,13 @@ export const ProductsApi = {
         const data = await http.get<ProductModel[]>("/Products")
         return data.map(toProduct)
     },
-    getFiltered: async (query: ProductQuery): Promise<Product[]> => {
-        const data = await http.get<ProductModel[]>("/Products", { params: query })
-        return data.map(toProduct)
+    getFiltered: async (query: ProductQuery): Promise<PagedResult<Product>> => {
+        const data = await http.get<PagedResult<ProductModel>>("/Products", { params: query })
+        return {
+            items: data.items.map(toProduct),
+            totalCount: data.totalCount,
+            totalPages: data.totalPages,
+        }
     },
     getById: async (id: number): Promise<Product> => {
         return toProduct(await http.get<ProductModel>(`/Products/${id}`))

@@ -25,6 +25,8 @@ function Shop() {
 
     const [search, setSearch] = useState("")
     const [query, setQuery] = useState<ProductQuery>({ Page: 1, PageSize: 10 })
+    const [totalCount, setTotalCount] = useState(0)
+    const [totalPages, setTotalPages] = useState(0)
     const [timer, setTimer] = useState<ReturnType<typeof setTimeout> | null>(null)
 
     const { addItem } = useCart()
@@ -36,7 +38,9 @@ function Shop() {
     function loadProducts(query: ProductQuery = {}) {
         ProductsApi.getFiltered(query)
             .then((data) => {
-                setProducts(data)
+                setProducts(data.items)
+                setTotalCount(data.totalCount)
+                setTotalPages(data.totalPages)
                 setLoading(false)
                 setError("")
             })
@@ -96,6 +100,7 @@ function Shop() {
                 </Box>
             ) : (
                 <>
+                    <Typography variant="h6">Total products found: {totalCount}</Typography>
                     <Box
                         sx={{
                             display: "grid",
@@ -136,7 +141,7 @@ function Shop() {
                     </Box>
                     <Box>
                         <Pagination
-                            count={100}
+                            count={totalPages}
                             page={query.Page ?? 1}
                             onChange={handlePagination}
                             sx={{ mt: 2, display: "flex", justifyContent: "center" }}
