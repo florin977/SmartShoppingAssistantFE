@@ -1,14 +1,20 @@
-import { useEffect, useState, type ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import type { Cart } from "../../components/shared/types/Cart"
 import { CartApiClient } from "../../api/clients/CartApiClient"
 import { CartContext } from "./cart-context"
+import { useAuth } from "../AuthContext/AuthContext"
 
 function CartProvider({ children }: { children: ReactNode }) {
     const [cart, setCart] = useState<Cart | null>(null)
     const [open, setOpen] = useState(false)
 
+    const { user } = useAuth()
+    const prevUserRef = useRef(user)
+
     const loadCart = () => {
-        CartApiClient.get().then(setCart)
+        CartApiClient.get()
+            .then(setCart)
+            .catch(() => setCart(null))
     }
 
     async function addItem(productId: number, quantity: number) {
@@ -27,8 +33,12 @@ function CartProvider({ children }: { children: ReactNode }) {
     }
 
     useEffect(() => {
-        loadCart()
-    }, [])
+        if (prevUserRef.current && !user) {
+            setCart(null)
+        } else if (!prevUserRef.current && user) {
+            loadCart()
+        }
+    }, [user])
 
     return (
         <CartContext.Provider

@@ -26,7 +26,7 @@ api.interceptors.response.use(
 
         if (error.response?.status === 401 && !originalRequest._retry) {
             if (originalRequest.url?.includes("/Auth/refresh")) {
-                window.location.href = "/auth/login"
+                //window.location.href = "/auth/login"
                 return Promise.reject(new Error(message))
             }
 
@@ -45,7 +45,7 @@ api.interceptors.response.use(
                 } catch (refreshError) {
                     isRefreshing = false
                     onRefreshed(new Error("Refresh failed"))
-                    window.location.href = "/auth/login"
+                    //window.location.href = "/auth/login"
 
                     return Promise.reject(refreshError)
                 }
