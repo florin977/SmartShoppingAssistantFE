@@ -25,15 +25,26 @@ import type { ProductQuery } from "../../components/shared/types/ProductQuery"
 import PageHeader from "../../components/common/PageHeader"
 
 function Shop() {
+    const SORT_OPTIONS = [
+        { label: "Price: Low to High", sortBy: "price", sortDirection: "asc" },
+        { label: "Price: High to Low", sortBy: "price", sortDirection: "desc" },
+        { label: "Name: A to Z", sortBy: "name", sortDirection: "asc" },
+        { label: "Name: Z to A", sortBy: "name", sortDirection: "desc" },
+    ] as const
+
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState(true)
     const [err, setError] = useState("")
 
-    const [search, setSearch] = useState("")
     const [query, setQuery] = useState<ProductQuery>({ Page: 1, PageSize: 10 })
+
+    const [search, setSearch] = useState("")
+    const [timer, setTimer] = useState<ReturnType<typeof setTimeout> | null>(null)
+
     const [totalCount, setTotalCount] = useState(0)
     const [totalPages, setTotalPages] = useState(0)
-    const [timer, setTimer] = useState<ReturnType<typeof setTimeout> | null>(null)
+
+    const [isFiltersDrawerOpen, setIsFiltersDrawerOpen] = useState(false)
 
     const { addItem } = useCart()
 
@@ -78,45 +89,30 @@ function Shop() {
         }))
     }
 
+    function getSortLabel(): string {
+        return (
+            SORT_OPTIONS.find(
+                (option) => option.sortBy === query.SortBy && option.sortDirection === query.SortDirection,
+            )?.label ?? ""
+        )
+    }
+
     const handleSortChange = (event: SelectChangeEvent) => {
-        const value = event.target.value
-
-        let sortBy = undefined
-        let sortDirection = undefined
-
-        if (value === "price: low-to-high") {
-            sortBy = "price"
-            sortDirection = "asc"
-        } else if (value === "price: high-to-low") {
-            sortBy = "price"
-            sortDirection = "desc"
-        } else if (value === "name: a-to-z") {
-            sortBy = "name"
-            sortDirection = "asc"
-        } else if (value === "name: z-to-a") {
-            sortBy = "name"
-            sortDirection = "desc"
-        }
+        const option = SORT_OPTIONS.find((o) => o.label === event.target.value)
 
         setQuery((prev) => ({
             ...prev,
             Page: 1,
-            SortBy: sortBy,
-            SortDirection: sortDirection,
+            SortBy: option?.sortBy,
+            SortDirection: option?.sortDirection,
         }))
-    }
-
-    function getSortLabel(): string {
-        if (query.SortBy === "price" && query.SortDirection === "asc") return "price: low-to-high"
-        else if (query.SortBy === "price" && query.SortDirection === "desc") return "price: high-to-low"
-        else if (query.SortBy === "name" && query.SortDirection === "asc") return "name: a-to-z"
-        else if (query.SortBy === "name" && query.SortDirection === "desc") return "name: z-to-a"
-        return ""
     }
 
     useEffect(() => {
         loadProducts(query)
     }, [query])
+
+    const sortLabel = getSortLabel()
 
     return (
         <Container maxWidth="xl" sx={{ py: 4 }}>
@@ -125,14 +121,15 @@ function Shop() {
                 action={
                     <FormControl size="small" sx={{ minWidth: 200 }}>
                         <InputLabel id="sort-label">Sort By</InputLabel>
-                        <Select labelId="sort-label" value={getSortLabel()} label="Sort By" onChange={handleSortChange}>
+                        <Select labelId="sort-label" value={sortLabel} label="Sort By" onChange={handleSortChange}>
                             <MenuItem value="">
                                 <em>None</em>
                             </MenuItem>
-                            <MenuItem value="price: low-to-high">Price: Low to High</MenuItem>
-                            <MenuItem value="price: high-to-low">Price: High to Low</MenuItem>
-                            <MenuItem value="name: a-to-z">Name: A to Z</MenuItem>
-                            <MenuItem value="name: z-to-a">Name: Z to A</MenuItem>
+                            {SORT_OPTIONS.map((option) => (
+                                <MenuItem key={option.label} value={option.label}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 }
@@ -150,7 +147,12 @@ function Shop() {
                 </Box>
             ) : (
                 <>
-                    <Typography variant="h6">Total products found: {totalCount}</Typography>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", pb: 1 }}>
+                        <Button variant="outlined" onClick={() => setIsFiltersDrawerOpen(true)}>
+                            Filters
+                        </Button>
+                        <Typography variant="h6">Total products found: {totalCount}</Typography>
+                    </Box>
                     <Box
                         sx={{
                             display: "grid",
