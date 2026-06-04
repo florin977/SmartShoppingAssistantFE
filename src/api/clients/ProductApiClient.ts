@@ -6,7 +6,7 @@ import type { ProductInput, ProductModel } from "../models/ProductModel"
 
 export const ProductsApi = {
     getAll: async (): Promise<Product[]> => {
-        const data = await http.get<ProductModel[]>("/Products")
+        const data = await http.get<ProductModel[]>("/Products/all")
         return data.map(toProduct)
     },
     getFiltered: async (query: ProductQuery): Promise<PagedResult<Product>> => {

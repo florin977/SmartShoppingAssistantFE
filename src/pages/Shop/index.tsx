@@ -7,9 +7,14 @@ import {
     CardMedia,
     CircularProgress,
     Container,
+    FormControl,
+    InputLabel,
+    MenuItem,
     Pagination,
+    Select,
     TextField,
     Typography,
+    type SelectChangeEvent,
 } from "@mui/material"
 import { useEffect, useState } from "react"
 import type { Product } from "../../components/shared/types/Product"
@@ -17,6 +22,7 @@ import { ProductsApi } from "../../api/clients/ProductApiClient"
 import { AddShoppingCart } from "@mui/icons-material"
 import { useCart } from "../../contexts/CartContext/cart-context"
 import type { ProductQuery } from "../../components/shared/types/ProductQuery"
+import PageHeader from "../../components/common/PageHeader"
 
 function Shop() {
     const [products, setProducts] = useState<Product[]>([])
@@ -72,21 +78,65 @@ function Shop() {
         }))
     }
 
+    const handleSortChange = (event: SelectChangeEvent) => {
+        const value = event.target.value
+
+        let sortBy = undefined
+        let sortDirection = undefined
+
+        if (value === "price: low-to-high") {
+            sortBy = "price"
+            sortDirection = "asc"
+        } else if (value === "price: high-to-low") {
+            sortBy = "price"
+            sortDirection = "desc"
+        } else if (value === "name: a-to-z") {
+            sortBy = "name"
+            sortDirection = "asc"
+        } else if (value === "name: z-to-a") {
+            sortBy = "name"
+            sortDirection = "desc"
+        }
+
+        setQuery((prev) => ({
+            ...prev,
+            Page: 1,
+            SortBy: sortBy,
+            SortDirection: sortDirection,
+        }))
+    }
+
+    function getSortLabel(): string {
+        if (query.SortBy === "price" && query.SortDirection === "asc") return "price: low-to-high"
+        else if (query.SortBy === "price" && query.SortDirection === "desc") return "price: high-to-low"
+        else if (query.SortBy === "name" && query.SortDirection === "asc") return "name: a-to-z"
+        else if (query.SortBy === "name" && query.SortDirection === "desc") return "name: z-to-a"
+        return ""
+    }
+
     useEffect(() => {
         loadProducts(query)
     }, [query])
 
     return (
         <Container maxWidth="xl" sx={{ py: 4 }}>
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mb: 2,
-                }}>
-                <Typography variant="h4">Shop</Typography>
-            </Box>
+            <PageHeader
+                title="Shop"
+                action={
+                    <FormControl size="small" sx={{ minWidth: 200 }}>
+                        <InputLabel id="sort-label">Sort By</InputLabel>
+                        <Select labelId="sort-label" value={getSortLabel()} label="Sort By" onChange={handleSortChange}>
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value="price: low-to-high">Price: Low to High</MenuItem>
+                            <MenuItem value="price: high-to-low">Price: High to Low</MenuItem>
+                            <MenuItem value="name: a-to-z">Name: A to Z</MenuItem>
+                            <MenuItem value="name: z-to-a">Name: Z to A</MenuItem>
+                        </Select>
+                    </FormControl>
+                }
+            />
             <TextField
                 label="Search products"
                 value={search}

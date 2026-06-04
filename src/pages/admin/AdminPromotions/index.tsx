@@ -1,6 +1,7 @@
 import {
     Alert,
     Box,
+    Button,
     CircularProgress,
     Container,
     IconButton,
@@ -74,7 +75,14 @@ function AdminPromotions() {
 
     return (
         <Container maxWidth="xl" sx={{ py: 4 }}>
-            <PageHeader title="Promotions" actionLabel={"Add promotion"} onAction={handleAdd} />
+            <PageHeader
+                title="Promotions"
+                action={
+                    <Button variant="contained" onClick={handleAdd}>
+                        Add promotion
+                    </Button>
+                }
+            />
             {error !== "" && (
                 <Alert severity="error" sx={{ mb: 2 }}>
                     {error}

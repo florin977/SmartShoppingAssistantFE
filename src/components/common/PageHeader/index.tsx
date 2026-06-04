@@ -1,18 +1,22 @@
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 
 interface PageHeaderProps {
     title: string
-    actionLabel: string
-    onAction: () => void
+    action: React.ReactNode
 }
 
-function PageHeader({ title, actionLabel, onAction }: PageHeaderProps) {
+function PageHeader({ title, action }: PageHeaderProps) {
     return (
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Box
+            sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 2,
+            }}>
             <Typography variant="h4">{title}</Typography>
-            <Button variant="contained" onClick={onAction}>
-                {actionLabel}
-            </Button>
+
+            {action && <Box>{action}</Box>}
         </Box>
     )
 }
