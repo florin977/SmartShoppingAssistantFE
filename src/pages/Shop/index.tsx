@@ -74,6 +74,7 @@ function Shop() {
         const newTimer = setTimeout(() => {
             setQuery((prev) => ({
                 ...prev,
+                Page: 1,
                 Search: searchTerm,
             }))
         }, 700)
