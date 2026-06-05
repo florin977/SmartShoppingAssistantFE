@@ -25,6 +25,8 @@ import { useCart } from "../../contexts/CartContext/cart-context"
 import type { ProductQuery } from "../../components/shared/types/ProductQuery"
 import PageHeader from "../../components/common/PageHeader"
 import FiltersDrawer from "../../components/FiltersDrawer"
+import type { Category } from "../../components/shared/types/Category"
+import { CategoriesApi } from "../../api/clients/CategoryApiClient"
 
 function Shop() {
     const SORT_OPTIONS = [
@@ -47,6 +49,10 @@ function Shop() {
     const [totalPages, setTotalPages] = useState(0)
 
     const [isFiltersDrawerOpen, setIsFiltersDrawerOpen] = useState(false)
+    const [categories, setCategories] = useState<Category[]>([])
+    const [selectedCategories, setSelectedCategories] = useState<number[]>([])
+    const [maxPrice, setMaxPrice] = useState(2000)
+    const [minPrice, setMinPrice] = useState(0)
 
     const { addItem } = useCart()
 
@@ -110,10 +116,39 @@ function Shop() {
             SortDirection: option?.sortDirection,
         }))
     }
+    function loadCategories() {
+        CategoriesApi.getAll()
+            .then((data) => {
+                setCategories(data)
+            })
+            .catch((err) => setError((err as Error).message))
+            .finally(() => setLoading(false))
+    }
+
+    function handleToggleCategory(categoryId: number) {
+        setSelectedCategories((prev) =>
+            prev.includes(categoryId) ? prev.filter((id) => id !== categoryId) : [...prev, categoryId],
+        )
+    }
+
+    function handleApply() {
+        setQuery((prev) => ({
+            ...prev,
+            Page: 1,
+            CategoryIds: selectedCategories,
+            MinPrice: minPrice,
+            MaxPrice: maxPrice,
+        }))
+        setIsFiltersDrawerOpen(false)
+    }
 
     useEffect(() => {
         loadProducts(query)
     }, [query])
+
+    useEffect(() => {
+        loadCategories()
+    }, [])
 
     const sortLabel = getSortLabel()
 
@@ -209,7 +244,15 @@ function Shop() {
                     </Box>
                     <FiltersDrawer
                         open={isFiltersDrawerOpen}
-                        onClose={() => setIsFiltersDrawerOpen(false)}></FiltersDrawer>
+                        onClose={() => setIsFiltersDrawerOpen(false)}
+                        categories={categories}
+                        selectedCategories={selectedCategories}
+                        handleToggleCategory={handleToggleCategory}
+                        maxPrice={maxPrice}
+                        minPrice={minPrice}
+                        handleApply={handleApply}
+                        loading={loading}
+                        err={err}></FiltersDrawer>
                 </>
             )}
             {products.length === 0 && (
