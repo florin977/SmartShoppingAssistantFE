@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Button,
     Card,
@@ -23,6 +24,7 @@ import { AddShoppingCart } from "@mui/icons-material"
 import { useCart } from "../../contexts/CartContext/cart-context"
 import type { ProductQuery } from "../../components/shared/types/ProductQuery"
 import PageHeader from "../../components/common/PageHeader"
+import FiltersDrawer from "../../components/FiltersDrawer"
 
 function Shop() {
     const SORT_OPTIONS = [
@@ -117,6 +119,11 @@ function Shop() {
 
     return (
         <Container maxWidth="xl" sx={{ py: 4 }}>
+            {err !== "" && (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                    {err}
+                </Alert>
+            )}
             <PageHeader
                 title="Shop"
                 action={
@@ -200,6 +207,9 @@ function Shop() {
                             sx={{ mt: 2, display: "flex", justifyContent: "center" }}
                         />
                     </Box>
+                    <FiltersDrawer
+                        open={isFiltersDrawerOpen}
+                        onClose={() => setIsFiltersDrawerOpen(false)}></FiltersDrawer>
                 </>
             )}
             {products.length === 0 && (
