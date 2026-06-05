@@ -3,6 +3,7 @@ import { toProduct, type Product } from "../../components/shared/types/Product"
 import type { ProductQuery } from "../../components/shared/types/ProductQuery"
 import { http } from "../base/http"
 import type { ProductInput, ProductModel } from "../models/ProductModel"
+import qs from "qs"
 
 export const ProductsApi = {
     getAll: async (): Promise<Product[]> => {
@@ -10,7 +11,10 @@ export const ProductsApi = {
         return data.map(toProduct)
     },
     getFiltered: async (query: ProductQuery): Promise<PagedResult<Product>> => {
-        const data = await http.get<PagedResult<ProductModel>>("/Products", { params: query })
+        const data = await http.get<PagedResult<ProductModel>>("/Products", {
+            params: query,
+            paramsSerializer: (params) => qs.stringify(params),
+        })
         return {
             items: data.items.map(toProduct),
             totalCount: data.totalCount,
