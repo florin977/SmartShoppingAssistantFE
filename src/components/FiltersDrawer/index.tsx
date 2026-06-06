@@ -23,8 +23,8 @@ export interface FiltersDrawerProps {
     categories: Category[]
     selectedCategories: number[]
     handleToggleCategory: (categoryId: number) => void
-    maxPrice: number
-    minPrice: number
+    sliderRange: number[]
+    handleSliderChange: (event: Event, range: number[]) => void
     handleApply: () => void
     loading: boolean
     err: string
@@ -36,8 +36,8 @@ function FiltersDrawer({
     categories,
     selectedCategories,
     handleToggleCategory,
-    maxPrice,
-    minPrice,
+    sliderRange,
+    handleSliderChange,
     handleApply,
     loading,
     err,
@@ -79,8 +79,11 @@ function FiltersDrawer({
                             </List>
 
                             <Box sx={{ mt: 2 }}>
-                                <Typography variant="body2">Max Price: {maxPrice} Ron</Typography>
-                                <Slider min={0} max={2000} value={[0, maxPrice]} />
+                                <Slider min={0} max={2000} value={sliderRange} onChange={handleSliderChange} />
+                                <Box sx={{ justifyContent: "space-between", display: "flex" }}>
+                                    <Typography variant="body2">Min Price: {sliderRange[0]} Ron</Typography>
+                                    <Typography variant="body2">Max Price: {sliderRange[1]} Ron</Typography>
+                                </Box>
                             </Box>
 
                             <Box sx={{ mt: "auto", pt: 2 }}>

@@ -51,8 +51,7 @@ function Shop() {
     const [isFiltersDrawerOpen, setIsFiltersDrawerOpen] = useState(false)
     const [categories, setCategories] = useState<Category[]>([])
     const [selectedCategories, setSelectedCategories] = useState<number[]>([])
-    const [maxPrice, setMaxPrice] = useState(2000)
-    const [minPrice, setMinPrice] = useState(0)
+    const [sliderRange, setSliderRange] = useState([0, 2000])
 
     const { addItem } = useCart()
 
@@ -116,6 +115,11 @@ function Shop() {
             SortDirection: option?.sortDirection,
         }))
     }
+
+    function handleSliderChange(event: Event, range: number[]) {
+        setSliderRange(range)
+    }
+
     function loadCategories() {
         CategoriesApi.getAll()
             .then((data) => {
@@ -136,8 +140,8 @@ function Shop() {
             ...prev,
             Page: 1,
             CategoryIds: selectedCategories,
-            MinPrice: minPrice,
-            MaxPrice: maxPrice,
+            MinPrice: sliderRange[0],
+            MaxPrice: sliderRange[1],
         }))
         setIsFiltersDrawerOpen(false)
     }
@@ -248,8 +252,8 @@ function Shop() {
                         categories={categories}
                         selectedCategories={selectedCategories}
                         handleToggleCategory={handleToggleCategory}
-                        maxPrice={maxPrice}
-                        minPrice={minPrice}
+                        sliderRange={sliderRange}
+                        handleSliderChange={handleSliderChange}
                         handleApply={handleApply}
                         loading={loading}
                         err={err}></FiltersDrawer>
