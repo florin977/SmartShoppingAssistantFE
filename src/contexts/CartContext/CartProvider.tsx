@@ -32,6 +32,11 @@ function CartProvider({ children }: { children: ReactNode }) {
         loadCart()
     }
 
+    async function removeAllProducts() {
+        await CartApiClient.removeAllItems()
+        loadCart()
+    }
+
     useEffect(() => {
         if (prevUserRef.current && !user) {
             setCart(null)
@@ -50,6 +55,7 @@ function CartProvider({ children }: { children: ReactNode }) {
                 addItem: addItem,
                 updateQuantity: updateQuantity,
                 removeProduct: removeProduct,
+                removeAllProducts: removeAllProducts,
             }}>
             {children}
         </CartContext.Provider>

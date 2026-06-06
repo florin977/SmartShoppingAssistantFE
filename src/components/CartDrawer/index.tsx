@@ -1,4 +1,4 @@
-import { Box, Divider, Drawer, IconButton, List, ListItem, Typography } from "@mui/material"
+import { Box, Button, Divider, Drawer, IconButton, List, ListItem, Typography } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
 import RemoveIcon from "@mui/icons-material/Remove"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import { useCart } from "../../contexts/CartContext/cart-context"
 
 function CartDrawer() {
-    const { cart, open, closeCart, updateQuantity, removeProduct } = useCart()
+    const { cart, open, closeCart, updateQuantity, removeProduct, removeAllProducts } = useCart()
 
     const isEmpty = cart === null || cart.items.length === 0
 
@@ -37,6 +37,13 @@ function CartDrawer() {
                     <Typography color="text.secondary">Your cart is empty.</Typography>
                 ) : (
                     <>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            sx={{ alignSelf: "flex-start" }}
+                            onClick={removeAllProducts}>
+                            Empty cart?
+                        </Button>
                         <List sx={{ flexGrow: 1, overflowY: "auto" }}>
                             {cart.items.map((item) => (
                                 <ListItem key={item.id} divider disableGutters sx={{ display: "block", py: 1.5 }}>

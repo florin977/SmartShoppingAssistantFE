@@ -13,4 +13,5 @@ export const CartApiClient = {
         await http.put(`/cart/items/${itemId}`, data)
     },
     removeItem: (itemId: number) => http.remove<void>(`/cart/items/${itemId}`),
+    removeAllItems: () => http.remove<void>("/cart"),
 }

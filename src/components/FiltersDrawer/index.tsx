@@ -27,6 +27,7 @@ export interface FiltersDrawerProps {
     handleSliderChange: (event: Event, range: number[]) => void
     handleApply: () => void
     loading: boolean
+    clearFilters: () => void
     err: string
 }
 
@@ -40,6 +41,7 @@ function FiltersDrawer({
     handleSliderChange,
     handleApply,
     loading,
+    clearFilters,
     err,
 }: FiltersDrawerProps) {
     return (
@@ -89,6 +91,14 @@ function FiltersDrawer({
                             <Box sx={{ mt: "auto", pt: 2 }}>
                                 <Button variant="contained" fullWidth onClick={handleApply}>
                                     Apply Filters
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    fullWidth
+                                    onClick={clearFilters}
+                                    sx={{ mt: 1 }}>
+                                    Clear Filters
                                 </Button>
                             </Box>
                         </Box>

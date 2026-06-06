@@ -120,6 +120,16 @@ function Shop() {
         setSliderRange(range)
     }
 
+    function handleClearAllFilters() {
+        setQuery(() => ({
+            Page: 1,
+            PageSize: 10,
+        }))
+        setSelectedCategories([])
+        setSliderRange([0, 2000])
+        setIsFiltersDrawerOpen(false)
+    }
+
     function loadCategories() {
         CategoriesApi.getAll()
             .then((data) => {
@@ -256,6 +266,7 @@ function Shop() {
                         handleSliderChange={handleSliderChange}
                         handleApply={handleApply}
                         loading={loading}
+                        clearFilters={handleClearAllFilters}
                         err={err}></FiltersDrawer>
                 </>
             )}
