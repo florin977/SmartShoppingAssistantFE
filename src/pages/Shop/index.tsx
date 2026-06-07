@@ -3,6 +3,7 @@ import {
     Box,
     Button,
     Card,
+    CardActionArea,
     CardActions,
     CardContent,
     CardMedia,
@@ -27,6 +28,7 @@ import PageHeader from "../../components/common/PageHeader"
 import FiltersDrawer from "../../components/FiltersDrawer"
 import type { Category } from "../../components/shared/types/Category"
 import { CategoriesApi } from "../../api/clients/CategoryApiClient"
+import { useNavigate } from "react-router-dom"
 
 function Shop() {
     const SORT_OPTIONS = [
@@ -54,6 +56,8 @@ function Shop() {
     const [sliderRange, setSliderRange] = useState([0, 2000])
 
     const { addItem } = useCart()
+
+    const navigate = useNavigate()
 
     const handleAddToCart = async (product: Product) => {
         await addItem(product.id, 1)
@@ -156,6 +160,10 @@ function Shop() {
         setIsFiltersDrawerOpen(false)
     }
 
+    function handleProductClick(productId: number) {
+        navigate(`/shop/${productId}`)
+    }
+
     useEffect(() => {
         loadProducts(query)
     }, [query])
@@ -220,31 +228,33 @@ function Shop() {
                         }}>
                         {products.map((product) => (
                             <Card key={product.id} sx={{ display: "flex", flexDirection: "column" }}>
-                                <CardMedia
-                                    component="img"
-                                    height="160"
-                                    image={product.imageUrl}
-                                    alt={product.name}
-                                    sx={{ objectFit: "cover" }}
-                                />
-                                <CardContent sx={{ flexGrow: 1 }}>
-                                    <Typography variant="h6">{product.name}</Typography>
-                                    <Typography variant="body2" color="textDisabled">
-                                        {product.description}
-                                    </Typography>
-                                    <Typography variant="subtitle1" sx={{ pt: 1 }}>
-                                        {product.price} Ron
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <Button
-                                        fullWidth
-                                        variant="contained"
-                                        startIcon={<AddShoppingCart />}
-                                        onClick={() => handleAddToCart(product)}>
-                                        Add to Cart
-                                    </Button>
-                                </CardActions>
+                                <CardActionArea onClick={() => handleProductClick(product.id)}>
+                                    <CardMedia
+                                        component="img"
+                                        height="160"
+                                        image={product.imageUrl}
+                                        alt={product.name}
+                                        sx={{ objectFit: "cover" }}
+                                    />
+                                    <CardContent sx={{ flexGrow: 1 }}>
+                                        <Typography variant="h6">{product.name}</Typography>
+                                        <Typography variant="body2" color="textDisabled">
+                                            {product.description}
+                                        </Typography>
+                                        <Typography variant="subtitle1" sx={{ pt: 1 }}>
+                                            {product.price} Ron
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button
+                                            fullWidth
+                                            variant="contained"
+                                            startIcon={<AddShoppingCart />}
+                                            onClick={() => handleAddToCart(product)}>
+                                            Add to Cart
+                                        </Button>
+                                    </CardActions>
+                                </CardActionArea>
                             </Card>
                         ))}
                     </Box>

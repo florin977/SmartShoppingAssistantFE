@@ -10,6 +10,12 @@ export interface Product {
     categories: Category[]
 }
 
+export interface ProductSummary {
+    id: number
+    name: string
+    imageUrl: string
+}
+
 export function toProduct(dto: ProductModel): Product {
     return {
         id: dto.id,

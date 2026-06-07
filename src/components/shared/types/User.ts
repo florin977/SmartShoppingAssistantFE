@@ -7,6 +7,11 @@ export interface User {
     role: RoleType
 }
 
+export interface UserSummary {
+    id: number
+    username: string
+}
+
 export function toUser(dto: UserModel): User {
     return {
         id: dto.id,
