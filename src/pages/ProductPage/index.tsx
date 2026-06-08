@@ -22,6 +22,7 @@ import { useCart } from "../../contexts/CartContext/cart-context"
 import { ReviewsApi } from "../../api/clients/ReviewApiClient"
 import { useAuth } from "../../contexts/AuthContext/AuthContext"
 import ReviewFormDialog from "../../components/ReviewFormDialog"
+import ConfirmDialog from "../../components/common/ConfirmDialog"
 
 function ProductPage() {
     const { productId } = useParams()
@@ -34,6 +35,7 @@ function ProductPage() {
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(0)
     const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false)
+    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
     const [myReview, setMyReview] = useState<ProductReview | null>(null)
     const pageSize = 3
 
@@ -73,6 +75,10 @@ function ProductPage() {
 
     function handleAddReview() {
         setIsReviewDialogOpen(true)
+    }
+
+    function handleDeleteReview() {
+        setIsConfirmDialogOpen(true)
     }
 
     useEffect(() => {
@@ -172,12 +178,12 @@ function ProductPage() {
                             <Typography variant="h4" gutterBottom>
                                 Customer Reviews
                             </Typography>
-                            <Box sx={{ display: "flex", flexDirection: "column"}}>
-                                <Button variant="contained" onClick={handleAddReview} sx={{mb: 1}}>
+                            <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                <Button variant="contained" onClick={handleAddReview} sx={{ mb: 1 }}>
                                     {myReview ? "Edit your review" : "Add review"}
                                 </Button>
                                 {myReview && (
-                                    <Button variant="contained" color="error" onClick={() => alert("Delete review")}>Delete your review</Button>
+                                    <Button variant="contained" color="error" onClick={handleDeleteReview}>Delete your review</Button>
                                 )}
                             </Box>
                         </Box>
@@ -249,6 +255,30 @@ function ProductPage() {
                                 loadMyReview(Number(productId))
                             }}
                         />
+                    )}
+                    {isConfirmDialogOpen && (
+                        <ConfirmDialog open={isConfirmDialogOpen} title={"Delete your review?"} description={"Are you sure you want to delete your review"} confirmLabel={"Delete review"}
+                            onConfirm={() => {
+                                if (myReview) {
+                                    ReviewsApi.deleteReview(myReview.id)
+                                        .then(() => {
+                                            setIsConfirmDialogOpen(false);
+                                            setMyReview(null);
+                                            loadReviews(Number(productId), 1);
+                                            setPage(1);
+                                            loadProduct(Number(productId));
+                                        })
+                                        .catch((e) => {
+                                            setErr((e as Error).message);
+                                            setIsConfirmDialogOpen(false);
+                                        });
+                                } else {
+                                    setIsConfirmDialogOpen(false);
+                                }
+                            }}
+                            onCancel={() => {
+                                setIsConfirmDialogOpen(false);
+                            }} />
                     )}
                 </>
             )}
