@@ -7,6 +7,7 @@ export interface ProductReview {
     rating: number
     text: string
     postedAt: string
+    updatedAt: string | null
     likes: number
     user: UserSummary
 }
@@ -16,6 +17,7 @@ export interface UserReview {
     rating: number
     text: string
     postedAt: string
+    updatedAt: string | null
     likes: number
     product: ProductSummary
 }
@@ -26,6 +28,7 @@ export function toProductReview(dto: ProductReviewModel): ProductReview {
         rating: dto.rating,
         text: dto.text,
         postedAt: dto.postedAt,
+        updatedAt: dto.updatedAt,
         likes: dto.likes,
         user: dto.user,
     }
@@ -37,6 +40,7 @@ export function toUserReview(dto: UserReviewModel): UserReview {
         rating: dto.rating,
         text: dto.text,
         postedAt: dto.postedAt,
+        updatedAt: dto.updatedAt,
         likes: dto.likes,
         product: dto.product,
     }

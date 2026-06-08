@@ -6,6 +6,8 @@ export interface ProductModel {
     description: string
     imageUrl: string
     price: number
+    rating: number
+    reviewsCount: number
     categories: CategoryModel[]
 }
 

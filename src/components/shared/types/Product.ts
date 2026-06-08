@@ -7,6 +7,8 @@ export interface Product {
     description: string
     imageUrl: string
     price: number
+    rating: number
+    reviewsCount: number
     categories: Category[]
 }
 
@@ -23,6 +25,8 @@ export function toProduct(dto: ProductModel): Product {
         description: dto.description,
         imageUrl: dto.imageUrl,
         price: dto.price,
+        rating: dto.rating,
+        reviewsCount: dto.reviewsCount,
         categories: dto.categories.map(toCategory) ?? [],
     }
 }

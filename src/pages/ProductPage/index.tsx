@@ -20,6 +20,8 @@ import { ProductsApi } from "../../api/clients/ProductApiClient"
 import type { ProductReview } from "../../components/shared/types/Review"
 import { useCart } from "../../contexts/CartContext/cart-context"
 import { ReviewsApi } from "../../api/clients/ReviewApiClient"
+import { useAuth } from "../../contexts/AuthContext/AuthContext"
+import ReviewFormDialog from "../../components/ReviewFormDialog"
 
 function ProductPage() {
     const { productId } = useParams()
@@ -31,6 +33,8 @@ function ProductPage() {
     const [reviews, setReviews] = useState<ProductReview[]>([])
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(0)
+    const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false)
+    const [myReview, setMyReview] = useState<ProductReview | null>(null)
     const pageSize = 3
 
     const loadProduct = useCallback((id: number) => {
@@ -59,14 +63,27 @@ function ProductPage() {
         [pageSize],
     )
 
+    const loadMyReview = useCallback((id: number) => {
+        ReviewsApi.getMyReview(id)
+            .then((review) => {
+                setMyReview(review)
+            })
+            .catch((e) => setErr((e as Error).message))
+    }, [])
+
+    function handleAddReview() {
+        setIsReviewDialogOpen(true)
+    }
+
     useEffect(() => {
         const id = Number(productId)
         if (id) {
             loadProduct(id)
             loadReviews(id, 1)
+            loadMyReview(id)
             setPage(1)
         }
-    }, [productId, loadProduct, loadReviews])
+    }, [productId, loadProduct, loadReviews, loadMyReview])
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value)
@@ -116,6 +133,18 @@ function ProductPage() {
                                 {product?.name}
                             </Typography>
 
+                            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                                <Rating
+                                    value={product?.rating ?? 0}
+                                    precision={0.5} // Allows half-stars for more accurate decimal representation
+                                    readOnly
+                                    size="medium"
+                                />
+                                <Typography variant="body2" color="textSecondary" sx={{ ml: 1 }}>
+                                    ({product?.reviewsCount ?? 0} {product?.reviewsCount === 1 ? 'review' : 'reviews'})
+                                </Typography>
+                            </Box>
+
                             <Typography variant="h4" color="primary" gutterBottom>
                                 ${product?.price.toFixed(2)}
                             </Typography>
@@ -139,9 +168,19 @@ function ProductPage() {
 
                     {/* --- Reviews Section --- */}
                     <Box>
-                        <Typography variant="h4" gutterBottom>
-                            Customer Reviews
-                        </Typography>
+                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                            <Typography variant="h4" gutterBottom>
+                                Customer Reviews
+                            </Typography>
+                            <Box sx={{ display: "flex", flexDirection: "column"}}>
+                                <Button variant="contained" onClick={handleAddReview} sx={{mb: 1}}>
+                                    {myReview ? "Edit your review" : "Add review"}
+                                </Button>
+                                {myReview && (
+                                    <Button variant="contained" color="error" onClick={() => alert("Delete review")}>Delete your review</Button>
+                                )}
+                            </Box>
+                        </Box>
 
                         {loadingReviews ? (
                             <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
@@ -169,7 +208,12 @@ function ProductPage() {
                                                     <Rating value={review.rating} readOnly size="small" />
                                                 </Box>
                                                 <Typography variant="caption" color="textSecondary" gutterBottom>
-                                                    {new Date(review.postedAt).toLocaleDateString()}
+                                                    Posted on {new Date(review.postedAt).toLocaleDateString()}
+                                                    {review.updatedAt && (
+                                                        <span style={{ fontStyle: "italic", marginLeft: "8px" }}>
+                                                            (Updated: {new Date(review.updatedAt).toLocaleDateString()})
+                                                        </span>
+                                                    )}
                                                 </Typography>
                                                 <Typography variant="body1" sx={{ mt: 1 }}>
                                                     "{review.text}"
@@ -192,6 +236,20 @@ function ProductPage() {
                             </>
                         )}
                     </Box>
+                    {isReviewDialogOpen && (
+                        <ReviewFormDialog
+                            review={myReview}
+                            productId={Number(productId)}
+                            onClose={() => setIsReviewDialogOpen(false)}
+                            onSaved={() => {
+                                setIsReviewDialogOpen(false);
+                                loadReviews(Number(productId), 1);
+                                setPage(1);
+                                loadProduct(Number(productId))
+                                loadMyReview(Number(productId))
+                            }}
+                        />
+                    )}
                 </>
             )}
         </Container>

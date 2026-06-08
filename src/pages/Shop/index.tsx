@@ -227,8 +227,9 @@ function Shop() {
                             gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
                         }}>
                         {products.map((product) => (
-                            <Card key={product.id} sx={{ display: "flex", flexDirection: "column" }}>
-                                <CardActionArea onClick={() => handleProductClick(product.id)}>
+                            <Card key={product.id} sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+                                <CardActionArea onClick={() => handleProductClick(product.id)}
+                                    sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "stretch", justifyContent: "flex-start" }}>
                                     <CardMedia
                                         component="img"
                                         height="160"
@@ -245,16 +246,16 @@ function Shop() {
                                             {product.price} Ron
                                         </Typography>
                                     </CardContent>
-                                    <CardActions>
-                                        <Button
-                                            fullWidth
-                                            variant="contained"
-                                            startIcon={<AddShoppingCart />}
-                                            onClick={() => handleAddToCart(product)}>
-                                            Add to Cart
-                                        </Button>
-                                    </CardActions>
                                 </CardActionArea>
+                                <CardActions>
+                                    <Button
+                                        fullWidth
+                                        variant="contained"
+                                        startIcon={<AddShoppingCart />}
+                                        onClick={() => handleAddToCart(product)}>
+                                        Add to Cart
+                                    </Button>
+                                </CardActions>
                             </Card>
                         ))}
                     </Box>

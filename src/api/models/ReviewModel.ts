@@ -6,6 +6,7 @@ export interface ProductReviewModel {
     rating: number
     text: string
     postedAt: string
+    updatedAt: string | null
     likes: number
     user: UserSummary
 }
@@ -15,6 +16,13 @@ export interface UserReviewModel {
     rating: number
     text: string
     postedAt: string
+    updatedAt: string | null
     likes: number
     product: ProductSummary
+}
+
+export interface ReviewInput {
+    productId: number
+    rating: number
+    text?: string
 }
