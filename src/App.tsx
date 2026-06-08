@@ -13,6 +13,7 @@ import Shop from "./pages/Shop"
 import CartProvider from "./contexts/CartContext/CartProvider"
 import CartDrawer from "./components/CartDrawer"
 import ProductPage from "./pages/ProductPage"
+import MyReviews from "./pages/MyReviews"
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/auth/register" element={<Register />} />
                     <Route path="/shop" element={<Shop />} />
                     <Route path="/shop/:productId" element={<ProductPage />} />
+                    <Route path="/reviews/:userId" element={<MyReviews />} />
 
                     <Route path="*" element={<NotFound />} />
                 </Routes>

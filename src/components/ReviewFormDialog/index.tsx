@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { Dialog, DialogTitle, DialogContent, DialogActions, Stack, Alert, TextField, Button, Rating } from "@mui/material"
-import type { ProductReview } from "../shared/types/Review"
+import type { ProductReview, UserReview } from "../shared/types/Review"
 import { ReviewsApi } from "../../api/clients/ReviewApiClient"
 
 interface ReviewFormDialogProps {
-    review: ProductReview | null
+    review: ProductReview | UserReview | null
     productId: number
     onClose: () => void
     onSaved: () => void

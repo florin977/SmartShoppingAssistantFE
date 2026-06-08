@@ -96,6 +96,9 @@ function NavBar() {
                                     <Typography variant="body1" sx={{ mb: 1 }}>
                                         {user?.username}
                                     </Typography>
+                                    <Button component={Link} to={`/reviews/${user.id}`} variant="text" sx={{ mb: 1 }}>
+                                        View your reviews
+                                    </Button>
                                     <Button onClick={handleLogout} variant="contained" color="error" sx={{ mb: 1 }}>
                                         Logout
                                     </Button>
