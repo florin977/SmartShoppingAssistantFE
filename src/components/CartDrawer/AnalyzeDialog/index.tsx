@@ -1,4 +1,4 @@
-import { Alert, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Divider, Stack, Typography } from "@mui/material"
+import { Alert, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Divider, LinearProgress, Stack, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import type { Analysis, Suggestion } from "../../shared/types/Analysis"
 import { useCart } from "../../../contexts/CartContext/cart-context"
@@ -18,6 +18,14 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
     const [err, setErr] = useState("")
     const [analysis, setAnalysis] = useState<Analysis | null>(null)
     const [decisions, setDecisions] = useState<Record<number, Decision>>({})
+    const loadingMessages = [
+        '🤖 Reading your cart...',
+        '🔍 Checking promotions...',
+        '✨ Finding the best deals...',
+        '🛒 Composing suggestions...',
+    ]
+    const [messageIndex, setMessageIndex] = useState(0)
+    const [progress, setProgress] = useState(0)
 
     const { addItem } = useCart()
 
@@ -41,6 +49,19 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
             .finally(() => setLoading(false))
     }, [])
 
+    useEffect(() => {
+        if (!loading) {
+            return
+        }
+
+        const timer = setInterval(() => {
+            setProgress((current) => (current >= 90 ? 90 : current + 5))
+            setMessageIndex((current) => ((current + 1) % loadingMessages.length))
+        }, 700)
+
+        return () => clearInterval(timer)
+    }, [loading])
+
     return (
         <Dialog open={true} onClose={onClose} fullWidth maxWidth="sm">
             <DialogTitle color="textSecondary" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -49,8 +70,9 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
             </DialogTitle>
             <DialogContent>
                 {loading && (
-                    <Box>
-                        <CircularProgress />
+                    <Box sx={{ py: 4, textAlign: "center",  }}>
+                        <Typography sx={{ mb: 2 }}>{loadingMessages[messageIndex]}</Typography>
+                        <LinearProgress variant="determinate" value={progress} />
                     </Box>
                 )}
                 {err !== "" && (
