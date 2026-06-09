@@ -4,9 +4,13 @@ import RemoveIcon from "@mui/icons-material/Remove"
 import DeleteIcon from "@mui/icons-material/Delete"
 import CloseIcon from "@mui/icons-material/Close"
 import { useCart } from "../../contexts/CartContext/cart-context"
+import { useState } from "react"
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome"
+import AnalyzeDialog from "./AnalyzeDialog"
 
 function CartDrawer() {
     const { cart, open, closeCart, updateQuantity, removeProduct, removeAllProducts } = useCart()
+    const [analyzeOpen, setAnalyzeOpen] = useState(false)
 
     const isEmpty = cart === null || cart.items.length === 0
 
@@ -84,7 +88,7 @@ function CartDrawer() {
                                                 <AddIcon fontSize="small" />
                                             </IconButton>
                                         </Box>
-                                        <Typography>{item.subtotal} Ron</Typography>
+                                        <Typography>{item.subtotal.toFixed(2)} Ron</Typography>
                                     </Box>
                                 </ListItem>
                             ))}
@@ -95,25 +99,35 @@ function CartDrawer() {
                         <Box sx={{ pt: 2 }}>
                             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}>
                                 <Typography>Subtotal</Typography>
-                                <Typography>{cart.subtotal} Ron</Typography>
+                                <Typography>{cart.subtotal.toFixed(2)} Ron</Typography>
                             </Box>
                             {cart.appliedPromotions.map((promotion) => (
                                 <Box
                                     key={promotion.promotionId}
                                     sx={{ display: "flex", justifyContent: "space-between", mb: 0.5 }}>
                                     <Typography color="success.main">{promotion.promotionName}</Typography>
-                                    <Typography color="success.main">{promotion.discount} Ron</Typography>
+                                    <Typography color="success.main">{promotion.discount.toFixed(2)} Ron</Typography>
                                 </Box>
                             ))}
                             <Divider sx={{ my: 1 }} />
                             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                                 <Typography variant="h6">Total</Typography>
-                                <Typography variant="h6">{cart.total} Ron</Typography>
+                                <Typography variant="h6">{cart.total.toFixed(2)} Ron</Typography>
                             </Box>
+                            <Button 
+                                fullWidth 
+                                variant="outlined" 
+                                startIcon={<AutoAwesomeIcon />} 
+                                onClick={() => setAnalyzeOpen(true)}
+                                sx={{ mt: 2 }}
+                            >
+                                AI Analyze
+                            </Button>
                         </Box>
                     </>
                 )}
             </Box>
+            {analyzeOpen && <AnalyzeDialog onClose={() => setAnalyzeOpen(false)}/>}
         </Drawer>
     )
 }

@@ -152,7 +152,7 @@ function ProductPage() {
                             </Box>
 
                             <Typography variant="h4" color="primary" gutterBottom>
-                                ${product?.price.toFixed(2)}
+                                {product?.price.toFixed(2)} Ron
                             </Typography>
 
                             <Typography variant="body1" color="textDisabled" sx={{ mb: 4 }}>

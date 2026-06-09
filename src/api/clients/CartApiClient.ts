@@ -1,5 +1,7 @@
+import { toAnalysis, type Analysis } from "../../components/shared/types/Analysis"
 import { type Cart, toCartModel } from "../../components/shared/types/Cart"
 import { http } from "../base/http"
+import type { AnalysisModel } from "../models/AnalysisModel"
 import type { AddCartItemInput, CartModel, UpdateCartItemInput } from "../models/CartModel"
 
 export const CartApiClient = {
@@ -14,4 +16,7 @@ export const CartApiClient = {
     },
     removeItem: (itemId: number) => http.remove<void>(`/cart/items/${itemId}`),
     removeAllItems: () => http.remove<void>("/cart"),
+    analyze: async (): Promise<Analysis> => {
+        return toAnalysis(await http.post<AnalysisModel>("/cart/analyze", {}))
+    }
 }
