@@ -26,18 +26,27 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
     ]
     const [messageIndex, setMessageIndex] = useState(0)
     const [progress, setProgress] = useState(0)
+    const [isOpen, setIsOpen] = useState(true)
+    const [decisionCount, setDecisionCount] = useState(0)
 
     const { addItem } = useCart()
 
     async function handleApprove(suggestion: Suggestion) {
         await addItem(suggestion.productId, suggestion.quantity)
         setDecisions((current) => ({ ...current, [suggestion.productId]: "approved" }))
+        setDecisionCount((current) => current + 1)
     }
 
     function handleDecline(suggestion: Suggestion) {
-
         setDecisions((current) => ({ ...current, [suggestion.productId]: "declined" }))
+        setDecisionCount((current) => current + 1)
     }
+
+    useEffect(() => {
+        if (decisionCount === 5) {
+            onClose()
+        }
+    }, [decisionCount])
 
     useEffect(() => {
         CartApiClient.analyze()
@@ -63,14 +72,14 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
     }, [loading])
 
     return (
-        <Dialog open={true} onClose={onClose} fullWidth maxWidth="sm">
+        <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="sm">
             <DialogTitle color="textSecondary" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <AutoAwesomeIcon />
                 AI Cart Analysis
             </DialogTitle>
             <DialogContent>
                 {loading && (
-                    <Box sx={{ py: 4, textAlign: "center",  }}>
+                    <Box sx={{ py: 4, textAlign: "center", }}>
                         <Typography sx={{ mb: 2 }}>{loadingMessages[messageIndex]}</Typography>
                         <LinearProgress variant="determinate" value={progress} />
                     </Box>
@@ -81,60 +90,63 @@ function AnalyzeDialog({ onClose }: AnalyzeDialogProps) {
                     </Alert>
                 )}
                 {analysis !== null && !loading && (
-                    <Stack spacing={2}>
-                        <Typography variant="body1">{analysis.summary}</Typography>
-                        <Divider />
+                    <>
+                        <Stack spacing={2}>
+                            <Typography variant="body1">{analysis.summary}</Typography>
+                            <Divider />
 
-                        {analysis.suggestions.length === 0 && (
-                            <Typography color="textSecondary" variant="body1">
-                                No suggestions for this cart
-                            </Typography>
-                        )}
+                            {analysis.suggestions.length === 0 && (
+                                <Typography color="textSecondary" variant="body1">
+                                    No suggestions for this cart
+                                </Typography>
+                            )}
 
-                        {
-                            analysis.suggestions.map((suggestion) => {
-                                const decision = decisions[suggestion.productId]
+                            {
+                                analysis.suggestions.map((suggestion) => {
+                                    const decision = decisions[suggestion.productId]
 
-                                return (
-                                    <Box key={suggestion.productId} sx={{
-                                        border: "1px solid",
-                                        borderColor: "divider",
-                                        borderRadius: 1,
-                                        p: 2
-                                    }}>
-                                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                            <Typography variant="subtitle1" color="textSecondary">
-                                                {suggestion.name} x {suggestion.quantity}
+                                    return (
+                                        <Box key={suggestion.productId} sx={{
+                                            border: "1px solid",
+                                            borderColor: "divider",
+                                            borderRadius: 1,
+                                            p: 2
+                                        }}>
+                                            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                                <Typography variant="subtitle1" color="textSecondary">
+                                                    {suggestion.name} x {suggestion.quantity}
+                                                </Typography>
+                                                <Typography variant="subtitle1" color="textSecondary">
+                                                    {suggestion.price} Ron
+                                                </Typography>
+                                            </Box>
+                                            <Typography variant="body2" sx={{ mt: 0.5 }}>
+                                                {suggestion.reason}
                                             </Typography>
-                                            <Typography variant="subtitle1" color="textSecondary">
-                                                {suggestion.price} Ron
-                                            </Typography>
+                                            {suggestion.savings !== null && suggestion.savings !== 0 && (
+                                                <Typography
+                                                    variant="body2"
+                                                    color="success"
+                                                    sx={{ mt: 0.5 }}>
+                                                    Saves {suggestion.savings.toFixed(2)} Ron
+                                                </Typography>
+                                            )}
+
+                                            <Box sx={{ mt: 1.5 }}>
+                                                {decision === undefined ? (
+                                                    <Stack direction="row" spacing={1}>
+                                                        <Button variant="contained" size="small" startIcon={<CheckIcon />} onClick={() => handleApprove(suggestion)}>Approve</Button>
+                                                        <Button variant="outlined" size="small" startIcon={<CloseIcon />} onClick={() => handleDecline(suggestion)}>Decline</Button>
+                                                    </Stack>
+                                                ) : (<></>)}
+                                            </Box>
                                         </Box>
-                                        <Typography variant="body2" sx={{ mt: 0.5 }}>
-                                            {suggestion.reason}
-                                        </Typography>
-                                        {suggestion.savings !== null && suggestion.savings !== 0 && (
-                                            <Typography
-                                                variant="body2"
-                                                color="success"
-                                                sx={{ mt: 0.5 }}>
-                                                Saves {suggestion.savings.toFixed(2)} Ron
-                                            </Typography>
-                                        )}
-
-                                        <Box sx={{ mt: 1.5 }}>
-                                            {decision === undefined ? (
-                                                <Stack direction="row" spacing={1}>
-                                                    <Button variant="contained" size="small" startIcon={<CheckIcon />} onClick={() => handleApprove(suggestion)}>Approve</Button>
-                                                    <Button variant="outlined" size="small" startIcon={<CloseIcon />} onClick={() => handleDecline(suggestion)}>Decline</Button>
-                                                </Stack>
-                                            ) : (<></>)}
-                                        </Box>
-                                    </Box>
-                                )
-                            })
-                        }
-                    </Stack>
+                                    )
+                                })
+                            }
+                            <Button variant="contained" onClick={onClose}>Close</Button>
+                        </Stack>
+                    </>
                 )}
             </DialogContent>
         </Dialog>
