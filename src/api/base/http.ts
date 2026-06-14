@@ -24,6 +24,10 @@ api.interceptors.response.use(
         const message = typeof data === "string" && data !== "" ? data : error.message || "Request failed"
         const originalRequest = error.config
 
+        if (error.response?.status === 401 && originalRequest.url?.toLowerCase().includes('login')) {
+            return Promise.reject(error);
+        }
+
         if (error.response?.status === 401 && !originalRequest._retry) {
             if (originalRequest.url?.includes("/Auth/refresh")) {
                 //window.location.href = "/auth/login"

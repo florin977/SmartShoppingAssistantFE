@@ -17,6 +17,7 @@ import MyReviews from "./pages/MyReviews"
 import ProtectedRoute from "./components/common/ProtectedRoute"
 import { WishlistProvider } from "./contexts/WishlistContext/WishlistProvider"
 import WishlistPage from "./pages/MyWishlist"
+import SlowLogin from "./pages/Auth/Slow-Login"
 
 function App() {
     return (
@@ -35,6 +36,7 @@ function App() {
                         <Route path="/shop/:productId" element={<ProductPage />} />
                         <Route path="/reviews/:userId" element={<MyReviews />} />
                         <Route path="/wishlist" element={<WishlistPage />} />
+                        <Route path="/auth/slow-login" element={<SlowLogin />} />
 
                         <Route path="*" element={<NotFound />} />
                     </Routes>

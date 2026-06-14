@@ -28,10 +28,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [])
 
     const login = async (credentials: LoginCredentials) => {
-        await AuthApiClient.login(credentials)
+        try {
+            await AuthApiClient.login(credentials)
 
-        const user = toUser(await UserApiClient.getUser())
-        setUser(user)
+            const user = toUser(await UserApiClient.getUser())
+            setUser(user)
+        } catch (error: any) {
+            if (error.response && error.response.data && error.response.data.message) {
+                throw new Error(error.response.data.message);
+            }
+
+            if (error instanceof Error) {
+                throw error;
+            }
+
+            throw new Error("An unexpected error occurred.");
+        }
     }
 
     const logout = async () => {
