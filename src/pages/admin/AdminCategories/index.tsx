@@ -15,6 +15,7 @@ import {
     Tooltip,
 } from "@mui/material"
 import { useEffect, useState } from "react"
+import { useAuth } from "../../../contexts/AuthContext/AuthContext"
 import type { Category } from "../../../components/shared/types/Category"
 import { CategoriesApi } from "../../../api/clients/CategoryApiClient"
 import EditIcon from "@mui/icons-material/Edit"
@@ -25,6 +26,7 @@ import type { CategoryModel } from "../../../api/models/CategoryModel"
 import ConfirmDialog from "../../../components/common/ConfirmDialog"
 
 function AdminCategories() {
+    const { user } = useAuth()
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
@@ -32,6 +34,14 @@ function AdminCategories() {
     const [editing, setEditing] = useState<Category | null>(null)
     const [deleting, setDeleting] = useState<CategoryModel | null>(null)
     const [confirmOpen, setConfirmOpen] = useState(false)
+
+    if (user?.role !== "Admin") {
+        return (
+            <Container maxWidth="xl" sx={{ py: 4 }}>
+                <Alert severity="error">Access Denied: Admin privileges required.</Alert>
+            </Container>
+        )
+    }
 
     function loadCategories() {
         CategoriesApi.getAll()

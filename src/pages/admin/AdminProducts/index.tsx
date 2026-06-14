@@ -17,6 +17,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { useEffect, useState } from "react"
+import { useAuth } from "../../../contexts/AuthContext/AuthContext"
 import type { Product } from "../../../components/shared/types/Product"
 import type { ProductModel } from "../../../api/models/ProductModel"
 import { ProductsApi } from "../../../api/clients/ProductApiClient"
@@ -25,6 +26,7 @@ import ProductFormDialog from "../../../components/admin/ProductFormDialog"
 import ConfirmDialog from "../../../components/common/ConfirmDialog"
 
 function AdminProducts() {
+    const { user } = useAuth()
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
@@ -32,6 +34,14 @@ function AdminProducts() {
     const [editing, setEditing] = useState<Product | null>(null)
     const [deleting, setDeleting] = useState<ProductModel | null>(null)
     const [confirmOpen, setConfirmOpen] = useState(false)
+
+    if (user?.role !== "Admin") {
+        return (
+            <Container maxWidth="xl" sx={{ py: 4 }}>
+                <Alert severity="error">Access Denied: Admin privileges required.</Alert>
+            </Container>
+        )
+    }
 
     function loadProducts() {
         ProductsApi.getAll()

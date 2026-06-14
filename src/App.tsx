@@ -14,6 +14,7 @@ import CartProvider from "./contexts/CartContext/CartProvider"
 import CartDrawer from "./components/CartDrawer"
 import ProductPage from "./pages/ProductPage"
 import MyReviews from "./pages/MyReviews"
+import ProtectedRoute from "./components/common/ProtectedRoute"
 
 function App() {
     return (
@@ -22,9 +23,9 @@ function App() {
                 <NavBar />
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/admin/categories" element={<AdminCategories />} />
-                    <Route path="/admin/products" element={<AdminProducts />} />
-                    <Route path="/admin/promotions" element={<AdminPromotions />} />
+                    <Route path="/admin/categories" element={<ProtectedRoute component={AdminCategories} requiredRole="Admin" />} />
+                    <Route path="/admin/products" element={<ProtectedRoute component={AdminProducts} requiredRole="Admin" />} />
+                    <Route path="/admin/promotions" element={<ProtectedRoute component={AdminPromotions} requiredRole="Admin" />} />
                     <Route path="/auth/login" element={<Login />} />
                     <Route path="/auth/register" element={<Register />} />
                     <Route path="/shop" element={<Shop />} />

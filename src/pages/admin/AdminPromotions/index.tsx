@@ -20,18 +20,28 @@ import PromotionFormDialog from "../../../components/admin/PromotionFormDialog"
 import { PromotionsApi } from "../../../api/clients/PromotionApiClient"
 import type { Promotion } from "../../../components/shared/types/Promotion"
 import { useEffect, useState } from "react"
+import { useAuth } from "../../../contexts/AuthContext/AuthContext"
 import PageHeader from "../../../components/common/PageHeader"
 import type { PromotionModel } from "../../../api/models/PromotionModel"
 import ConfirmDialog from "../../../components/common/ConfirmDialog"
 
 function AdminPromotions() {
-    const [Promotions, setPromotions] = useState<Promotion[]>([])
+    const { user } = useAuth()
+    const [promotions, setPromotions] = useState<Promotion[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
     const [formOpen, setFormOpen] = useState(false)
     const [editing, setEditing] = useState<Promotion | null>(null)
     const [deleting, setDeleting] = useState<PromotionModel | null>(null)
     const [confirmOpen, setConfirmOpen] = useState(false)
+
+    if (user?.role !== "Admin") {
+        return (
+            <Container maxWidth="xl" sx={{ py: 4 }}>
+                <Alert severity="error">Access Denied: Admin privileges required.</Alert>
+            </Container>
+        )
+    }
 
     function loadPromotions() {
         PromotionsApi.getAll()
@@ -109,7 +119,7 @@ function AdminPromotions() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {Promotions.map((promotion) => (
+                            {promotions.map((promotion) => (
                                 <TableRow key={promotion.id} hover>
                                     <TableCell>{promotion.name}</TableCell>
                                     <TableCell>{promotion.type}</TableCell>
@@ -133,7 +143,7 @@ function AdminPromotions() {
                                     </TableCell>
                                 </TableRow>
                             ))}
-                            {Promotions.length === 0 && (
+                            {promotions.length === 0 && (
                                 <TableRow>
                                     <TableCell colSpan={3} align="center">
                                         No Promotions yet.
