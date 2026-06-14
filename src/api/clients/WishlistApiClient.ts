@@ -14,7 +14,8 @@ export const WishlistApiClient = {
         }
     },
     addToWishlist: async(data: WishlistInput): Promise<Wishlist> => {
-        return await http.post<Wishlist>("/Wishlist", data)
+        const result = await http.post<WishlistModel>("/Wishlist", data)
+        return toWishlist(result);
     },
     removeFromWishlist: async(productId: number): Promise<void> => {
         return await http.remove<void>(`/Wishlist/${productId}`)
