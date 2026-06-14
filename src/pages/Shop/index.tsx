@@ -10,6 +10,7 @@ import {
     CircularProgress,
     Container,
     FormControl,
+    IconButton,
     InputLabel,
     MenuItem,
     Pagination,
@@ -29,6 +30,9 @@ import FiltersDrawer from "../../components/FiltersDrawer"
 import type { Category } from "../../components/shared/types/Category"
 import { CategoriesApi } from "../../api/clients/CategoryApiClient"
 import { useNavigate } from "react-router-dom"
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useWishlist } from "../../contexts/WishlistContext/wishlist-context"
 
 function Shop() {
     const SORT_OPTIONS = [
@@ -56,6 +60,7 @@ function Shop() {
     const [sliderRange, setSliderRange] = useState([0, 2000])
 
     const { addItem } = useCart()
+    const { addToWishlist, removeFromWishlist, getWishlistItem } = useWishlist();
 
     const navigate = useNavigate()
 
@@ -226,38 +231,70 @@ function Shop() {
                             alignContent: "start",
                             gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
                         }}>
-                        {products.map((product) => (
-                            <Card key={product.id} sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-                                <CardActionArea onClick={() => handleProductClick(product.id)}
-                                    sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "stretch", justifyContent: "flex-start" }}>
-                                    <CardMedia
-                                        component="img"
-                                        height="160"
-                                        image={product.imageUrl}
-                                        alt={product.name}
-                                        sx={{ objectFit: "cover" }}
-                                    />
-                                    <CardContent sx={{ flexGrow: 1 }}>
-                                        <Typography variant="h6">{product.name}</Typography>
-                                        <Typography variant="body2" color="textDisabled">
-                                            {product.description}
-                                        </Typography>
-                                        <Typography variant="subtitle1" sx={{ pt: 1 }}>
-                                            {product.price} Ron
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button
-                                        fullWidth
-                                        variant="contained"
-                                        startIcon={<AddShoppingCart />}
-                                        onClick={() => handleAddToCart(product)}>
-                                        Add to Cart
-                                    </Button>
-                                </CardActions>
-                            </Card>
-                        ))}
+                        {products.map((product) => {
+                            const wishlistItem = getWishlistItem(product.id);
+                            const isWished = !!wishlistItem;
+
+                            return (
+                                <Card key={product.id} sx={{ display: "flex", flexDirection: "column", height: "100%", position: "relative" }}>
+
+                                    <IconButton
+                                        aria-label="add to wishlist"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (isWished) {
+                                                removeFromWishlist(wishlistItem.id);
+                                            } else {
+                                                addToWishlist({ productID: product.id });
+                                            }
+                                        }}
+                                        sx={{
+                                            position: "absolute",
+                                            top: 8,
+                                            right: 8,
+                                            zIndex: 2,
+                                            backgroundColor: "rgba(255, 255, 255, 0.7)",
+                                            "&:hover": { backgroundColor: "white" }
+                                        }}
+                                    >
+                                         {isWished ? (
+                                            <FavoriteIcon color="error" />
+                                        ) : (
+                                            <FavoriteBorderIcon color="error" />
+                                        )}
+                                    </IconButton>
+
+                                    <CardActionArea onClick={() => handleProductClick(product.id)}
+                                        sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "stretch", justifyContent: "flex-start" }}>
+                                        <CardMedia
+                                            component="img"
+                                            height="160"
+                                            image={product.imageUrl}
+                                            alt={product.name}
+                                            sx={{ objectFit: "cover" }}
+                                        />
+                                        <CardContent sx={{ flexGrow: 1 }}>
+                                            <Typography variant="h6">{product.name}</Typography>
+                                            <Typography variant="body2" color="textDisabled">
+                                                {product.description}
+                                            </Typography>
+                                            <Typography variant="subtitle1" sx={{ pt: 1 }}>
+                                                {product.price} Ron
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                    <CardActions>
+                                        <Button
+                                            fullWidth
+                                            variant="contained"
+                                            startIcon={<AddShoppingCart />}
+                                            onClick={() => handleAddToCart(product)}>
+                                            Add to Cart
+                                        </Button>
+                                    </CardActions>
+                                </Card>
+                            )
+                        })}
                     </Box>
                     <Box>
                         <Pagination

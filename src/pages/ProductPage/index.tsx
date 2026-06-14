@@ -8,6 +8,7 @@ import {
     Container,
     Divider,
     Grid,
+    IconButton,
     Pagination,
     Rating,
     Stack,
@@ -22,6 +23,9 @@ import { useCart } from "../../contexts/CartContext/cart-context"
 import { ReviewsApi } from "../../api/clients/ReviewApiClient"
 import ReviewFormDialog from "../../components/ReviewFormDialog"
 import ConfirmDialog from "../../components/common/ConfirmDialog"
+import { useWishlist } from "../../contexts/WishlistContext/wishlist-context"
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 function ProductPage() {
     const { productId } = useParams()
@@ -37,6 +41,8 @@ function ProductPage() {
     const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
     const [myReview, setMyReview] = useState<ProductReview | null>(null)
     const pageSize = 3
+
+    const { addToWishlist, removeFromWishlist, getWishlistItem } = useWishlist()
 
     const loadProduct = useCallback((id: number) => {
         setLoading(true)
@@ -98,6 +104,9 @@ function ProductPage() {
         }
     }
 
+    const wishlistItem = product ? getWishlistItem(product.id) : undefined;
+    const isWished = !!wishlistItem;
+
     return (
         <Container sx={{ py: 4 }}>
             {err !== "" && (
@@ -158,14 +167,41 @@ function ProductPage() {
                                 {product?.description}
                             </Typography>
 
-                            <Button
-                                variant="contained"
-                                size="large"
-                                color="primary"
-                                sx={{ py: 1.5, fontSize: "1.1rem", width: { xs: "100%", sm: "50%" } }}
-                                onClick={() => addItem(product?.id ?? 0, 1)}>
-                                Add to Cart
-                            </Button>
+                            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    color="primary"
+                                    sx={{ py: 1.5, fontSize: "1.1rem", width: { xs: "100%", sm: "50%" } }}
+                                    onClick={() => addItem(product?.id ?? 0, 1)}>
+                                    Add to Cart
+                                </Button>
+
+                                <IconButton
+                                    color="error"
+                                    onClick={() => {
+                                        if (!product) return;
+                                        if (isWished && wishlistItem) {
+                                            removeFromWishlist(wishlistItem.id);
+                                        } else {
+                                            addToWishlist({ productID: product.id });
+                                        }
+                                    }}
+                                    sx={{
+                                        width: 56,
+                                        height: 56,
+                                        border: '1px solid',
+                                        borderColor: 'error.main',
+                                        bgcolor: isWished ? 'error.light' : 'transparent',
+                                        '&:hover': {
+                                            bgcolor: 'error.main',
+                                            color: 'white',
+                                        }
+                                    }}
+                                >
+                                    {isWished ? <FavoriteIcon fontSize="large" /> : <FavoriteBorderIcon fontSize="large" />}
+                                </IconButton>
+                            </Box>
                         </Grid>
                     </Grid>
 

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
 import type { Wishlist, WishlistInput } from '../../components/shared/types/Wishlist';
 
 export interface WishlistContextType {
@@ -11,6 +11,7 @@ export interface WishlistContextType {
     setPage: (page: number) => void;
     addToWishlist: (input: WishlistInput) => Promise<void>;
     removeFromWishlist: (id: number) => Promise<void>;
+    getWishlistItem: (productId: number) => Wishlist | undefined;
 }
 
 export const WishlistContext = createContext<WishlistContextType | null>(null);
