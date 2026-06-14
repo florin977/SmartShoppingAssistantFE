@@ -72,7 +72,7 @@ function NavBar() {
                 <Box className="nav-island">
                     {user === null ? (
                         <Button className="navbar-btn-login" component={NavLink} to="/auth/login" variant="text">
-                            Login
+                            Log In
                         </Button>
                     ) : (
                         <>

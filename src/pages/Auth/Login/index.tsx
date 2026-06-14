@@ -17,7 +17,7 @@ function Login() {
 
     useEffect(() => {
         const penaltyUntil = localStorage.getItem("penaltyUntil");
-        
+
         if (penaltyUntil) {
             if (parseInt(penaltyUntil, 10) > Date.now()) {
                 navigate("/auth/slow-login");
@@ -51,8 +51,6 @@ function Login() {
                 } else {
                     setErr(`Invalid credentials. Attempts remaining: ${3 - attempts}`);
                 }
-            } else if (errorMessage.includes("Account is locked") || errorMessage.includes("Account locked")) {
-                navigate("/auth/slow-login");
             } else {
                 // Fallback for any other errors
                 setErr(errorMessage);
@@ -85,7 +83,7 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button type="submit" variant="contained" color="primary" disabled={isLoading}>
-                    {isLoading ? "Loading..." : "Login"}
+                    {isLoading ? "Loading..." : "Log In"}
                 </Button>
                 <Box className="login-register-link">
                     No account? <Link to="/auth/register">Register here</Link>
