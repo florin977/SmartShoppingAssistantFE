@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom"
 import { ThemeProvider } from "@mui/material/styles"
 import theme from "./theme.ts"
 import { CssBaseline } from "@mui/material"
-import { AuthProvider } from "./contexts/AuthContext/AuthContext.tsx"
+import { AuthProvider } from "./contexts/AuthContext/AuthProvider.tsx"
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>

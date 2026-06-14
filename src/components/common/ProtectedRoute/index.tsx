@@ -1,6 +1,6 @@
 import { CircularProgress, Box } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import { useAuth } from "../../../contexts/AuthContext/AuthContext"
+import { useAuth } from "../../../contexts/AuthContext/auth-context"
 import type { RoleType } from "../../shared/types/AuthTypes"
 import { useEffect } from "react"
 

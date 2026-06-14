@@ -17,7 +17,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { useEffect, useState } from "react"
-import { useAuth } from "../../../contexts/AuthContext/AuthContext"
+import { useAuth } from "../../../contexts/AuthContext/auth-context"
 import type { Product } from "../../../components/shared/types/Product"
 import type { ProductModel } from "../../../api/models/ProductModel"
 import { ProductsApi } from "../../../api/clients/ProductApiClient"

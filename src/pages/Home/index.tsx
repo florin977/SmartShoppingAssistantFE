@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Container, Stack, Paper } from "@mui/material"
-import { useAuth } from "../../contexts/AuthContext/AuthContext"
+import { useAuth } from "../../contexts/AuthContext/auth-context"
 import { Link } from "react-router-dom"
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag"
 

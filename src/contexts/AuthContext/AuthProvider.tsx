@@ -4,17 +4,7 @@ import type { LoginCredentials } from "../../components/shared/types/AuthTypes"
 import { AuthApiClient } from "../../api/clients/AuthApiClient"
 import { UserApiClient } from "../../api/clients/UserApiClient"
 import { useNavigate } from "react-router-dom"
-
-interface AuthContextType {
-    user: User | null
-    isLoading: boolean
-    login: (credentials: LoginCredentials) => Promise<void>
-    logout: () => Promise<void>
-    logoutAll: () => Promise<void>
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const AuthContext = React.createContext<AuthContextType | null>(null)
+import { AuthContext } from "./auth-context"
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = React.useState<User | null>(null)
@@ -55,16 +45,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(null)
         navigate("/")
     }
-    return <AuthContext.Provider value={{ user, isLoading, login, logout, logoutAll }}>{children}</AuthContext.Provider>
-}
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const useAuth = () => {
-    const context = React.useContext(AuthContext)
-
-    if (context === null) {
-        throw new Error("useAuth must be used within an AuthProvider")
-    }
-
-    return context
+    return (
+        <AuthContext.Provider
+            value={{ user, isLoading, login, logout, logoutAll }
+            }>{children}
+        </AuthContext.Provider>
+    )
 }

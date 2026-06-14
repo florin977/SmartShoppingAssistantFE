@@ -15,7 +15,7 @@ import {
     Tooltip,
 } from "@mui/material"
 import { useEffect, useState } from "react"
-import { useAuth } from "../../../contexts/AuthContext/AuthContext"
+import { useAuth } from "../../../contexts/AuthContext/auth-context"
 import type { Category } from "../../../components/shared/types/Category"
 import { CategoriesApi } from "../../../api/clients/CategoryApiClient"
 import EditIcon from "@mui/icons-material/Edit"

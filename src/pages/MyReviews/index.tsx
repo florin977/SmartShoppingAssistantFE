@@ -17,7 +17,7 @@ import { ReviewsApi } from "../../api/clients/ReviewApiClient";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ReviewFormDialog from "../../components/ReviewFormDialog";
 import ConfirmDialog from "../../components/common/ConfirmDialog";
-import { useAuth } from "../../contexts/AuthContext/AuthContext";
+import { useAuth } from "../../contexts/AuthContext/auth-context";
 
 function MyReviews() {
     const { user, isLoading } = useAuth()

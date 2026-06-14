@@ -2,7 +2,7 @@ import { AppBar, Avatar, Badge, Box, Button, IconButton, Toolbar, Typography, Me
 import { Link, NavLink } from "react-router-dom"
 import "./NavBar.css"
 import logo from "../../../assets/logo.png"
-import { useAuth } from "../../../contexts/AuthContext/AuthContext"
+import { useAuth } from "../../../contexts/AuthContext/auth-context"
 import { useCart } from "../../../contexts/CartContext/cart-context"
 import { ShoppingCart } from "@mui/icons-material"
 import { useState } from "react"

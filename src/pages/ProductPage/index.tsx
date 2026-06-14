@@ -20,7 +20,6 @@ import { ProductsApi } from "../../api/clients/ProductApiClient"
 import type { ProductReview } from "../../components/shared/types/Review"
 import { useCart } from "../../contexts/CartContext/cart-context"
 import { ReviewsApi } from "../../api/clients/ReviewApiClient"
-import { useAuth } from "../../contexts/AuthContext/AuthContext"
 import ReviewFormDialog from "../../components/ReviewFormDialog"
 import ConfirmDialog from "../../components/common/ConfirmDialog"
 

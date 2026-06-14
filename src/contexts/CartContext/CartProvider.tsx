@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react"
 import type { Cart } from "../../components/shared/types/Cart"
 import { CartApiClient } from "../../api/clients/CartApiClient"
 import { CartContext } from "./cart-context"
-import { useAuth } from "../AuthContext/AuthContext"
+import { useAuth } from "../AuthContext/auth-context"
 
 function CartProvider({ children }: { children: ReactNode }) {
     const [cart, setCart] = useState<Cart | null>(null)
